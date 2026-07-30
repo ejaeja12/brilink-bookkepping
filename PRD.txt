@@ -1,0 +1,15 @@
+Web pencatatan keuangan brilink
+
+Fitur total : 
+menampilkan total saldo masuk, saldo keluar, fee bersih
+
+Fitur input transaksi : 
+pilih jenis transaksi
+if tarik tunai -> pilih penerima dana (Dana, bank, dll) -> input nominal -> pilih potong luar atau dalam
+if setor / pembayaran -> input sumber dana -> input biaya admin layanan ->
+setiap biaya admin dihitung berdasarkan jumlah nominal
+
+
+
+================
+
