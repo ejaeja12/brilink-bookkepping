@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
+use App\Traits\Loggable;
 use Ramsey\Uuid\Uuid;
 
 class Transaction extends Model
@@ -14,6 +15,8 @@ class Transaction extends Model
     use HasFactory;
 
     use HasUuids;
+
+    use Loggable;
 
     /**
      * Generate a new UUID for the model.

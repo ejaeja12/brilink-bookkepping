@@ -6,6 +6,7 @@ import DialogInput from '@/components/DialogInput';
 import FieldsEditTransaction from '@/components/input_transaction/FieldsEditTransaction';
 import TabsCreateTransaction from '@/components/input_transaction/TabsCreateTransaction';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { dashboard } from '@/routes';
 
 export default function Dashboard({ transaksi }: { transaksi: any }) {
@@ -26,35 +27,43 @@ export default function Dashboard({ transaksi }: { transaksi: any }) {
    return (
       <>
          <Head title="Dashboard" />
-
-         {/* Modal transaction */}
-
-         <DialogInput
-            openState={open}
-            setCloseState={() => handleCloseDialog()}
-            trigger={
-               <Button onClick={() => setOpen(true)} size={'lg'} className="w-sm">
-                  Tambah Bank
-               </Button>
-            }
-         >
-            {editId !== '' ? (
-               <FieldsEditTransaction dataId={editId} cb={() => handleCloseDialog()} />
-            ) : (
-               <TabsCreateTransaction callBack={() => setOpen(false)} />
-            )}
-         </DialogInput>
-
-         {/* Table */}
-         <div className="flex h-full flex-1 flex-col overflow-x-auto rounded-xl p-4">
-            <div className="container mx-auto py-10">
-               <DataTable
-                  columns={columns({
-                     onEdit: (columnData) => handleEditTogle(columnData),
-                  })}
-                  data={transaksi.data}
-               />
+         <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-12 gap-4">
+               <Card className="col-span-4 h-36" />
+               <Card className="col-span-4 h-36" />
+               <Card className="col-span-4 h-36" />
             </div>
+
+            {/* Table */}
+            <Card className="w-full border-2 bg-white">
+               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-xl">Transaksi</CardTitle>
+               </CardHeader>
+               <CardContent className="flex flex-col gap-5">
+                  {/* Modal transaction */}
+                  <DialogInput
+                     openState={open}
+                     setCloseState={() => handleCloseDialog()}
+                     trigger={
+                        <Button onClick={() => setOpen(true)} size={'lg'} className="w-sm">
+                           Tambah Bank
+                        </Button>
+                     }
+                  >
+                     {editId !== '' ? (
+                        <FieldsEditTransaction dataId={editId} cb={() => handleCloseDialog()} />
+                     ) : (
+                        <TabsCreateTransaction callBack={() => setOpen(false)} />
+                     )}
+                  </DialogInput>
+                  <DataTable
+                     columns={columns({
+                        onEdit: (columnData) => handleEditTogle(columnData),
+                     })}
+                     data={transaksi.data}
+                  />
+               </CardContent>
+            </Card>
          </div>
       </>
    );

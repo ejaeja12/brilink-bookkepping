@@ -27,11 +27,20 @@ class TransactionStoreRequest extends FormRequest
         return [
             'bank_id' => 'required',
             'jenis_transaksi' => 'required',
-            'nominal' => 'required',
+            'nominal' => 'required|string|regex:/^[0-9]+$/',
             'biaya_layanan' => '',
             'jenis_pembayaran' => '',
             'biaya_admin' => 'required',
         ];
+    }
+
+
+
+    protected function passedValidation()
+    {
+        $this->merge([
+            'nominal' => (int) $this->nominal,
+        ]);
     }
 
     #[Override]

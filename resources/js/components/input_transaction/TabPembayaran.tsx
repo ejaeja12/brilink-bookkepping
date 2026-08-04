@@ -1,10 +1,9 @@
 import { useForm } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import InputCurrency from '@/components/input-currency';
 import { Field, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field';
-
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useFormatCurrency, formatRupiah } from '@/hooks/useFormatCurrency';
 import { adminFeeRules } from '@/lib/adminFeeRules';
 import { store } from '@/routes/transaction';
 import { update } from '@/routes/transaction';
@@ -32,10 +31,8 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
     */
    const editData = editId !== '' ? transaksi.data.find((x: Transaction) => x.id === editId) : undefined;
 
-   const [formattedNominal, setFormattedNominal, rawValueNominal] = useFormatCurrency(editData?.nominal ?? 0);
-   const [formattedServiceFee, setFormattedServiceFee, rawValueServiceFee] = useFormatCurrency(
-      editData?.biaya_layanan ?? 0,
-   );
+   const [nominal, setNominal] = useState(editData?.nominal ? String(editData?.nominal) : '');
+   const [biayaLayanan, setBiayaLayanan] = useState(editData?.biaya_layanan ? String(editData?.biaya_layanan) : '');
    const [jenisPembayaran, setJenisPembayaran] = useState(editData?.jenis_pembayaran ?? '');
    const [bankValue, setBankValue] = useState(editData?.bank.id ?? '');
 
@@ -59,17 +56,17 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
 
    const { setData, post, put, processing } = useForm({
       bank_id: '',
-      nominal: 0,
+      nominal: '0',
       jenis_transaksi: 'pembayaran',
       jenis_pembayaran: '',
-      biaya_layanan: 0,
+      biaya_layanan: '0',
       biaya_admin: 0,
    });
 
    function validateData(onValidate: () => void) {
       if (bankValue == '') {
          return toastError('Bank tidak boleh kosong');
-      } else if (rawValueNominal == 0) {
+      } else if (nominal == '') {
          return toastError('Nominal tidak boleh kosong');
       } else if (jenisPembayaran === '') {
          return toastError('Jenis Pembayaran tidak boleh kosong');
@@ -79,8 +76,8 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
    }
    function submit(e: React.FormEvent) {
       e.preventDefault();
-      setData('nominal', rawValueNominal);
-      setData('biaya_layanan', rawValueServiceFee);
+      setData('nominal', nominal);
+      setData('biaya_layanan', biayaLayanan);
       setData('jenis_pembayaran', jenisPembayaran);
       setData('bank_id', bankValue);
       validateData(() => {
@@ -161,19 +158,11 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
                onChange={(e) => setJenisPembayaran(e.target.value)}
             />
 
-            <InputField
-               label="Nominal"
-               value={formattedNominal}
-               onChange={(e) => setFormattedNominal(e.target.value)}
-            />
+            <InputCurrency initialValue={nominal} label="Nominal" handleInput={setNominal} />
 
-            <InputField
-               label="Biaya Layanan"
-               value={formattedServiceFee}
-               onChange={(e) => setFormattedServiceFee(e.target.value)}
-            />
+            <InputCurrency initialValue={biayaLayanan} label="Biaya Layanan" handleInput={setBiayaLayanan} />
 
-            <InputField label="Biaya Admin" value={formatRupiah(adminFeeRules(rawValueNominal))} disabled />
+            <InputCurrency disabled displayValue={adminFeeRules(nominal)} label="Admin" />
 
             <Field>
                <Button disabled={processing} onClick={submit}>

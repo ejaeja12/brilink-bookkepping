@@ -4,13 +4,12 @@ import { useState } from 'react';
 import { Field, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field';
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useFormatCurrency, formatRupiah } from '@/hooks/useFormatCurrency';
 import { adminFeeRules } from '@/lib/adminFeeRules';
 import { store } from '@/routes/transaction';
 import { update } from '@/routes/transaction';
 import type { Transaction } from '@/types/transaction';
 import type { BankType } from '@/types/transaction';
-import InputField from '../InputField';
+import InputCurrency from '../input-currency';
 import { toastSuccess, toastError } from '../toastNotif';
 import { Button } from '../ui/button';
 
@@ -32,24 +31,22 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
     */
    const editData = editId !== '' ? transaksi.data.find((x: Transaction) => x.id === editId) : undefined;
 
-   const [formattedNominal, setFormattedNominal, rawValueNominal] = useFormatCurrency(editData?.nominal ?? 0);
-   const [formattedServiceFee, setFormattedServiceFee, rawValueServiceFee] = useFormatCurrency(
-      editData?.biaya_layanan ?? 0,
-   );
+   const [nominal, setNominal] = useState(editData?.nominal ? String(editData?.nominal) : '');
+   const [biayaLayanan, setBiayaLayanan] = useState(editData?.biaya_layanan ? String(editData?.biaya_layanan) : '');
    const [bankValue, setBankValue] = useState(editData?.bank.id ?? '');
 
    const { setData, post, put } = useForm({
       bank_id: '',
-      nominal: 0,
+      nominal: '0',
       jenis_transaksi: 'setor_tunai',
-      biaya_layanan: 0,
+      biaya_layanan: '0',
       biaya_admin: 0,
    });
 
    function validateData(onValidate: () => void) {
       if (bankValue == '') {
          return toastError('Bank tidak boleh kosong');
-      } else if (rawValueNominal == 0) {
+      } else if (nominal == '') {
          return toastError('Nominal tidak boleh kosong');
       } else {
          return onValidate();
@@ -58,8 +55,8 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
 
    function submit(e: React.FormEvent) {
       e.preventDefault();
-      setData('nominal', rawValueNominal);
-      setData('biaya_layanan', rawValueServiceFee);
+      setData('nominal', nominal);
+      setData('biaya_layanan', biayaLayanan);
       setData('bank_id', bankValue);
       validateData(() => {
          if (editId !== '') {
@@ -102,25 +99,11 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
                   </Select>
                </Field>
 
-               <InputField
-                  label="Nominal"
-                  value={formattedNominal}
-                  placeHolder="sd"
-                  onChange={(e) => {
-                     setFormattedNominal(e.target.value);
-                  }}
-               />
+               <InputCurrency initialValue={nominal} label="Nominal" handleInput={setNominal} />
 
-               <InputField
-                  label="Biaya Layanan"
-                  value={formattedServiceFee}
-                  placeHolder="sd"
-                  onChange={(e) => {
-                     setFormattedServiceFee(e.target.value);
-                  }}
-               />
+               <InputCurrency initialValue={biayaLayanan} label="Biaya Layanan" handleInput={setBiayaLayanan} />
 
-               <InputField label="Biaya Admin" disabled value={formatRupiah(adminFeeRules(rawValueNominal))} />
+               <InputCurrency disabled displayValue={adminFeeRules(nominal)} label="Admin" />
 
                <Field>
                   <Button onClick={submit}>Submit</Button>
