@@ -10,7 +10,7 @@ import { UserMenuContent } from '@/components/user-menu-content';
 
 import { useInitials } from '@/hooks/use-initials';
 import { toUrl } from '@/lib/utils';
-import { dashboard } from '@/routes';
+import dashboard from '@/routes/dashboard';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -20,7 +20,7 @@ type Props = {
 const mainNavItems: NavItem[] = [
    {
       title: 'Dashboard',
-      href: dashboard(),
+      href: dashboard.index(),
       icon: LayoutGrid,
    },
 ];

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Fortify\CreateNewUser;
+use App\Models\LogActivity;
 use App\Models\MasterBank;
 use App\Models\MasterPembayaran;
 use App\Models\Transaction;
@@ -10,6 +12,8 @@ use Database\Factories\TransactionFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,10 +29,19 @@ class DatabaseSeeder extends Seeder
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
+        //     'password' => bcrypt('password'),
         // ]);
 
         // Transaction::factory(5)->create();
 
+        $user = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@test.com',
+            'password' => Hash::make('Tes123456'),
+            'email_verified_at' => now(),
+        ]);
+
+        Auth::login($user);
         /**
          * sqlite tidak auto generate uuid, nanti klo dah pake sql hapus aja  str->uuid
          * @id
@@ -61,6 +74,7 @@ class DatabaseSeeder extends Seeder
                     ['jenis_transaksi' => 'setor_tunai'],
                     ['jenis_transaksi' => 'tarik_tunai'],
                 )
+
             )->for($bank)->create();
         }
     }

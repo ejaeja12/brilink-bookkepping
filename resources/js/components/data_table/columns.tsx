@@ -96,6 +96,13 @@ export const columns = ({ onEdit }: { onEdit: (x: any) => void }): ColumnDef<Pay
    {
       accessorKey: 'biaya_admin',
       header: 'Biaya Admin',
+      cell: ({ row }) => {
+         return (
+            <div className={`${row.getValue('biaya_admin') == null && 'font-semibold'}`}>
+               {row.getValue('biaya_admin') == null ? '-' : formatRupiah(row.getValue('biaya_admin'))}
+            </div>
+         );
+      },
    },
    {
       accessorKey: 'created_at',

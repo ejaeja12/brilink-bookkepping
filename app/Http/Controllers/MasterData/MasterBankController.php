@@ -18,7 +18,7 @@ class MasterBankController extends Controller
     {
         $bankData = MasterBank::get()->all();
 
-        return Inertia::render('MasterBank', [
+        return Inertia::render('masters/MasterBank', [
             'bankData' => $bankData
         ]);
     }

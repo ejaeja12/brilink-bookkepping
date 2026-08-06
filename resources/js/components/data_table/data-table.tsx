@@ -17,7 +17,6 @@ import {
    DropdownMenuContent,
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface DataTableProps<TData, TValue> {
@@ -52,7 +51,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
    return (
       <div>
          <div className="flex items-center py-4">
-            <Input
+            {/* <Input
                placeholder="Filter emails..."
                // value={
                //     (table
@@ -65,7 +64,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                //         ?.setFilterValue(event.target.value)
                // }
                className="max-w-sm"
-            />
+            /> */}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="ml-auto">

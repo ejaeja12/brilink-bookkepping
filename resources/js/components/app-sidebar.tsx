@@ -12,15 +12,21 @@ import {
    SidebarMenuButton,
    SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import dashboard from '@/routes/dashboard';
 import banks from '@/routes/master-banks';
 import masterPembayarans from '@/routes/master-pembayarans';
+import transaction from '@/routes/transaction';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
    {
       title: 'Dashboard',
-      href: dashboard(),
+      href: dashboard.index(),
+      icon: LayoutGrid,
+   },
+   {
+      title: 'Transaksi',
+      href: transaction.index(),
       icon: LayoutGrid,
    },
 ];
@@ -38,6 +44,14 @@ const masterDataItems: NavItem[] = [
    },
 ];
 
+const logActivity: NavItem[] = [
+   {
+      title: 'Log Activity',
+      href: '/log-activity',
+      icon: LayoutGrid,
+   },
+];
+
 export function AppSidebar() {
    return (
       <Sidebar collapsible="icon" variant="inset">
@@ -45,7 +59,7 @@ export function AppSidebar() {
             <SidebarMenu>
                <SidebarMenuItem>
                   <SidebarMenuButton size="lg" asChild>
-                     <Link href={dashboard()} prefetch>
+                     <Link href={dashboard.index()} prefetch>
                         <AppLogo />
                      </Link>
                   </SidebarMenuButton>
@@ -54,7 +68,7 @@ export function AppSidebar() {
          </SidebarHeader>
 
          <SidebarContent>
-            <NavMain items={mainNavItems} masterItems={masterDataItems} />
+            <NavMain items={mainNavItems} masterItems={masterDataItems} logActivity={logActivity} />
          </SidebarContent>
       </Sidebar>
    );

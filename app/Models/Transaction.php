@@ -53,7 +53,7 @@ class Transaction extends Model
         } else if ($value <= 10000000) {
             return 20000;
         } else {
-            return $value * 0.05;
+            return $value * 0.003;
         }
     }
 
@@ -62,5 +62,16 @@ class Transaction extends Model
         // Karena nama utk foreign key custom, bukan master_bank_id namun bank_id pada migrasi
         // maka perlu di inisiasi pada relasi sebeagai argumen ke dua di belongsTo
         return $this->belongsTo(MasterBank::class, 'bank_id');
+    }
+
+    protected function logAttribute(array $attribute)
+    {
+        if (array_key_exists('bank_id', $attribute) && $attribute['bank_id']) {
+            $bank = $this->relationLoaded('masterBank') ? $this->masterBank : $this->masterBank()->first();
+            $attribute['bank'] = $bank->name;
+            unset($attribute['bank_id']);
+        }
+
+        return $attribute;
     }
 }

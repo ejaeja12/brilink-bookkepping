@@ -15,7 +15,7 @@ class MasterPembayaranController extends Controller
     public function index()
     {
         $dataPembayaran = MasterPembayaran::get()->all();
-        return Inertia::render('MasterPembayaran', ['dataPembayaran' => $dataPembayaran]);
+        return Inertia::render('masters/MasterPembayaran', ['dataPembayaran' => $dataPembayaran]);
     }
 
     /**
