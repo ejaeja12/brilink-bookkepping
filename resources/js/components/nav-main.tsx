@@ -11,11 +11,12 @@ import type { NavItem } from '@/types';
 
 type Props = {
    items?: NavItem[];
+   reportItems?: NavItem[];
    masterItems?: NavItem[];
    logActivity?: NavItem[];
 };
 
-export function NavMain({ items = [], masterItems = [], logActivity = [] }: Props) {
+export function NavMain({ items = [], reportItems = [], masterItems = [], logActivity = [] }: Props) {
    const { isCurrentUrl } = useCurrentUrl();
 
    return (
@@ -23,6 +24,19 @@ export function NavMain({ items = [], masterItems = [], logActivity = [] }: Prop
          <SidebarGroupLabel>Platform</SidebarGroupLabel>
          <SidebarMenu>
             {items.map((item) => (
+               <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild isActive={isCurrentUrl(item.href)} tooltip={{ children: item.title }}>
+                     <Link href={item.href} prefetch>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                     </Link>
+                  </SidebarMenuButton>
+               </SidebarMenuItem>
+            ))}
+         </SidebarMenu>
+         <SidebarGroupLabel>Report</SidebarGroupLabel>
+         <SidebarMenu>
+            {reportItems.map((item) => (
                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild isActive={isCurrentUrl(item.href)} tooltip={{ children: item.title }}>
                      <Link href={item.href} prefetch>

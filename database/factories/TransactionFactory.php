@@ -25,4 +25,12 @@ class TransactionFactory extends Factory
             'biaya_admin' => 0,
         ];
     }
+
+    public function withCreatedAt($date): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'created_at' => $date,
+            'updated_at' => $date, // opsional
+        ]);
+    }
 }

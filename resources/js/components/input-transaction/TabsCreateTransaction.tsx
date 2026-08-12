@@ -1,6 +1,6 @@
-import { TabPembayaran } from '@/components/input_transaction/TabPembayaran';
-import { TabSetorTunai } from '@/components/input_transaction/TabSetorTunai';
-import { TabTarikTunai } from '@/components/input_transaction/TabTarikTunai';
+import { TabPembayaran } from '@/components/input-transaction/TabPembayaran';
+import { TabSetorTunai } from '@/components/input-transaction/TabSetorTunai';
+import { TabTarikTunai } from '@/components/input-transaction/TabTarikTunai';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function TabsCreateTransaction({ callBack }: { callBack: () => void }) {

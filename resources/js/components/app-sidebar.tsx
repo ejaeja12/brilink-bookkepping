@@ -15,6 +15,7 @@ import {
 import dashboard from '@/routes/dashboard';
 import banks from '@/routes/master-banks';
 import masterPembayarans from '@/routes/master-pembayarans';
+import reporttransaction from '@/routes/reporttransaction';
 import transaction from '@/routes/transaction';
 import type { NavItem } from '@/types';
 
@@ -30,7 +31,13 @@ const mainNavItems: NavItem[] = [
       icon: LayoutGrid,
    },
 ];
-
+const reportNavItems: NavItem[] = [
+   {
+      title: 'Laporan Transaksi',
+      href: reporttransaction.index(),
+      icon: LayoutGrid,
+   },
+];
 const masterDataItems: NavItem[] = [
    {
       title: 'Bank Data',
@@ -68,7 +75,12 @@ export function AppSidebar() {
          </SidebarHeader>
 
          <SidebarContent>
-            <NavMain items={mainNavItems} masterItems={masterDataItems} logActivity={logActivity} />
+            <NavMain
+               items={mainNavItems}
+               reportItems={reportNavItems}
+               masterItems={masterDataItems}
+               logActivity={logActivity}
+            />
          </SidebarContent>
       </Sidebar>
    );

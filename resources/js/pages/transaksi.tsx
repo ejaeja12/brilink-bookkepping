@@ -1,50 +1,51 @@
 import { Head } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
-import { useForm } from '@inertiajs/react';
+import { router, Deferred } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import CardStatistic from '@/components/card_statistic';
 import { columns } from '@/components/data_table/columns';
 import { DataTable } from '@/components/data_table/data-table';
 import InputSearch from '@/components/data_table/input-search';
-import { DatePickerWithRange, type DateRange } from '@/components/date-picker';
 import DialogInput from '@/components/DialogInput';
-import FieldsEditTransaction from '@/components/input_transaction/FieldsEditTransaction';
-import TabsCreateTransaction from '@/components/input_transaction/TabsCreateTransaction';
+import FieldsEditTransaction from '@/components/input-transaction/FieldsEditTransaction';
+import TabsCreateTransaction from '@/components/input-transaction/TabsCreateTransaction';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { formatRupiah } from '@/hooks/useFormatCurrency';
 import transaction from '@/routes/transaction';
 
 export default function Transaksi({ transaksi }: { transaksi: any }) {
    const [open, setOpen] = useState(false);
    const [editId, setEditId] = useState('');
-
-   // tes search
-
-   const { get, setData, data } = useForm({
-      search: '',
-      startDate: formatDate(new Date()),
-      endDate: formatDate(new Date()),
-   });
+   const [search, setSearch] = useState('');
+   const [dayFilter, setDayFilter] = useState('');
 
    const { statistic } = usePage<{ statistic: any }>().props;
 
    useEffect(() => {
+      const x: Record<string, any> = {};
+
+      if (search !== '') {
+         x['search'] = search;
+      }
+
+      if (dayFilter !== '') {
+         x['days'] = dayFilter;
+      }
+
       const timeOut = setTimeout(() => {
-         get(transaction.index.url(), { preserveState: true, only: ['transaksi'] });
-      }, 500);
+         router.get(transaction.index.url(), x, {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['transaksi', 'statistic'],
+         });
+      }, 300);
 
       return () => clearTimeout(timeOut);
-   }, [data]);
-
-   function formatDate(date: Date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      return `${year}-${month}-${day}`;
-   }
+   }, [search, dayFilter]);
 
    function handleEditTogle(x: any) {
       setOpen(true);
@@ -58,14 +59,7 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
    }
 
    function handleSearch(e: string) {
-      setData('search', e);
-   }
-
-   function handleDate(e: DateRange) {
-      if (e !== undefined) {
-         setData('startDate', formatDate(e.from!));
-         setData('endDate', formatDate(e.to!));
-      }
+      setSearch(e);
    }
 
    return (
@@ -99,17 +93,59 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
                   </DialogInput>
                </CardHeader>
                <CardContent className="flex flex-col gap-5">
-                  {/* Modal transaction */}
-                  <div className="flex w-fit flex-row gap-5">
-                     <InputSearch onChanges={(e) => handleSearch(e)} />
-                     <DatePickerWithRange onChange={handleDate}></DatePickerWithRange>
-                  </div>
-                  <DataTable
-                     columns={columns({
-                        onEdit: (columnData) => handleEditTogle(columnData),
-                     })}
-                     data={transaksi.data}
-                  />
+                  {/* Deffered itu fungsi bawaan inertia, lazy load data*/}
+                  <Deferred data="transaksi" fallback={<div>Loading...</div>}>
+                     {transaksi && (
+                        <>
+                           <DataTable
+                              columns={columns({
+                                 onEdit: (columnData) => handleEditTogle(columnData),
+                              })}
+                              data={transaksi.data}
+                              filter={
+                                 <div className="flex w-fit flex-row gap-5">
+                                    <InputSearch onChanges={(e) => handleSearch(e)} />
+                                    <Select value={dayFilter} onValueChange={(e) => setDayFilter(e)} required>
+                                       <SelectTrigger className="w-full max-w-48">
+                                          <SelectValue placeholder="Today" />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                          <SelectGroup>
+                                             <SelectItem value="">Today</SelectItem>
+                                             <SelectItem value="3d">3 Hari</SelectItem>
+                                             <SelectItem value="w">1 Minggu</SelectItem>
+                                             <SelectItem value="m">1 Bulan</SelectItem>
+                                          </SelectGroup>
+                                       </SelectContent>
+                                    </Select>
+                                 </div>
+                              }
+                           />
+                           <div className="flex items-center justify-end space-x-2 py-4">
+                              <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() =>
+                                    router.get(transaksi.links.prev, {}, { preserveState: true, preserveScroll: true })
+                                 }
+                                 disabled={transaksi.links.prev === null ? true : false}
+                              >
+                                 Previous
+                              </Button>
+                              <Button
+                                 variant="outline"
+                                 size="sm"
+                                 onClick={() =>
+                                    router.get(transaksi.links.next, {}, { preserveState: true, preserveScroll: true })
+                                 }
+                                 disabled={transaksi.links.next === null ? true : false}
+                              >
+                                 Next
+                              </Button>
+                           </div>
+                        </>
+                     )}
+                  </Deferred>
                </CardContent>
             </Card>
          </div>

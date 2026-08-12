@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { DataTable } from '@/components/data_table/data-table';
 
 import DialogInput from '@/components/DialogInput';
-import CreatePembayaranData from '@/components/master_data/pembayaran_master/CreatePembayaran';
-import { pembayaranColumn } from '@/components/master_data/pembayaran_master/PembayaranColumn.';
+import CreatePembayaranData from '@/components/master-data/pembayaran_master/CreatePembayaran';
+import { pembayaranColumn } from '@/components/master-data/pembayaran_master/PembayaranColumn.';
 import { Button } from '@/components/ui/button';
 
 import masterBanks from '@/routes/master-banks';

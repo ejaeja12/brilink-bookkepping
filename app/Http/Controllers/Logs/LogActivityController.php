@@ -11,7 +11,7 @@ class LogActivityController extends Controller
 {
     public function index()
     {
-        $logactivity = LogActivity::orderBy('created_at', 'desc')->get();
+        $logactivity = LogActivity::orderBy('created_at', 'desc')->paginate(10);
         return Inertia::render('logs/log-activity', [
             'logactivity' => $logactivity
         ]);
