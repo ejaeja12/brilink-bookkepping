@@ -1,12 +1,13 @@
 import { Head } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
 import { useState } from 'react';
-
 import { DataTable } from '@/components/data_table/data-table';
-
+import InputSearch from '@/components/data_table/input-search';
 import DialogInput from '@/components/DialogInput';
 import { bankColumn } from '@/components/master-data/bank_master/BankColumn';
 import CreateBankData from '@/components/master-data/bank_master/CreateBankData';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import masterBanks from '@/routes/master-banks';
 
@@ -29,21 +30,27 @@ export default function MasterBank({ bankData }: { bankData: any }) {
          <Head title="Bank Data" />
 
          {/* Dialog Add Master Data : Bank */}
-         <DialogInput
-            openState={open}
-            setCloseState={() => handleCloseDialog()}
-            trigger={
-               <Button onClick={() => setOpen(true)} size={'lg'} className="w-sm">
-                  Tambah Bank
-               </Button>
-            }
-         >
-            <CreateBankData editId={editId} onSuccessCallBack={() => handleCloseDialog()} />
-         </DialogInput>
 
          {/* Table */}
-         <div className="flex h-full flex-1 flex-col overflow-x-auto rounded-xl p-4">
-            <div className="container mx-auto py-10">
+         <Card className="w-full border-2 bg-white">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+               <CardTitle className="text-xl">Bank Data</CardTitle>
+               <DialogInput
+                  openState={open}
+                  setCloseState={() => handleCloseDialog()}
+                  trigger={
+                     <Button onClick={() => setOpen(true)} className="w-fit">
+                        <Plus />
+                        Tambah Bank
+                     </Button>
+                  }
+               >
+                  <CreateBankData editId={editId} onSuccessCallBack={() => handleCloseDialog()} />
+               </DialogInput>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-5">
+               {/* Deffered itu fungsi bawaan inertia, lazy load data*/}
+
                <DataTable
                   columns={bankColumn({
                      actionEdit: (e) => {
@@ -51,9 +58,22 @@ export default function MasterBank({ bankData }: { bankData: any }) {
                      },
                   })}
                   data={bankData}
+                  filter={
+                     <div className="flex w-fit flex-row gap-5">
+                        <InputSearch onChanges={() => {}} />
+                     </div>
+                  }
                />
-            </div>
-         </div>
+               <div className="flex items-center justify-end space-x-2 py-4">
+                  <Button variant="outline" size="sm" onClick={() => {}} disabled={true}>
+                     Previous
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => {}} disabled={true}>
+                     Next
+                  </Button>
+               </div>
+            </CardContent>
+         </Card>
       </>
    );
 }

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->enum('status', ['active', 'nonactive'])->default('active');
             $table->timestamps();
+
+            $table->index('name');
         });
 
         Schema::create('transactions', function (Blueprint $table) {
@@ -27,6 +29,9 @@ return new class extends Migration
             $table->integer('biaya_layanan')->nullable();
             $table->integer('biaya_admin');
             $table->timestamps();
+
+            $table->index('nominal');
+            $table->index('created_at');
         });
     }
 

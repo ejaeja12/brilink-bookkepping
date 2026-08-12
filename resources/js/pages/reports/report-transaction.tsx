@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import { useHttp } from '@inertiajs/react';
+import { FileDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { columns } from '@/components/data_table/columns';
 import { DataTable } from '@/components/data_table/data-table';
@@ -92,7 +93,10 @@ export default function ReportTransaction({ transaksi }: { transaksi: any }) {
             <Card className="w-full border-2 bg-white">
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xl">Transaksi</CardTitle>
-                  <Button onClick={() => handleGeneratePdf()}>export</Button>
+                  <Button variant={'secondary'} onClick={() => handleGeneratePdf()}>
+                     <FileDown />
+                     export
+                  </Button>
                </CardHeader>
                <CardContent className="flex flex-col gap-5">
                   {/* Modal transaction */}
