@@ -100,7 +100,10 @@
             "mkdir -p /vercel/output/static",
             "cp -r public/build /vercel/output/static/",
             "php artisan config:clear",
-            "php artisan cache:clear"
+            "php artisan cache:clear",
+            "php artisan config:cache",
+            "php artisan route:cache"
+
         ]
 
     },
