@@ -1,8 +1,10 @@
 import { Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
+import { useEffect } from 'react';
 import AppLogo from '@/components/app-logo';
-
 import { NavMain } from '@/components/nav-main';
+import { useSidebar } from '@/components/ui/sidebar';
 
 import {
    Sidebar,
@@ -60,6 +62,16 @@ const logActivity: NavItem[] = [
 ];
 
 export function AppSidebar() {
+   const { setOpenMobile, isMobile } = useSidebar();
+
+   useEffect(() => {
+      return router.on('navigate', () => {
+         if (isMobile) {
+            setOpenMobile(false);
+         }
+      });
+   }, [isMobile]);
+
    return (
       <Sidebar collapsible="icon" variant="inset">
          <SidebarHeader>
