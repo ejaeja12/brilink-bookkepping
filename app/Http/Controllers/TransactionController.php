@@ -51,7 +51,7 @@ class TransactionController extends Controller
         return Inertia::render(
             'transaksi',
             [
-                'transaksi' => Inertia::defer(fn() => TransactionResource::collection($transaksi)),
+                'transaksi' => TransactionResource::collection($transaksi),
                 'bankData' => $dataMasterBank,
                 'pembayaranData' => $dataMasterPembayaran,
                 'statistic' => $statistic
