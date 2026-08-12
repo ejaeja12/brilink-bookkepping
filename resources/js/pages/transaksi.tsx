@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
-import { router, Deferred } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import CardStatistic from '@/components/card_statistic';
@@ -94,58 +94,53 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
                </CardHeader>
                <CardContent className="flex flex-col gap-5">
                   {/* Deffered itu fungsi bawaan inertia, lazy load data*/}
-                  <Deferred data="transaksi" fallback={<div>Loading...</div>}>
-                     {transaksi && (
-                        <>
-                           <DataTable
-                              columns={columns({
-                                 onEdit: (columnData) => handleEditTogle(columnData),
-                              })}
-                              data={transaksi.data}
-                              filter={
-                                 <div className="flex w-fit flex-row gap-5">
-                                    <InputSearch onChanges={(e) => handleSearch(e)} />
-                                    <Select value={dayFilter} onValueChange={(e) => setDayFilter(e)} required>
-                                       <SelectTrigger className="w-full max-w-48">
-                                          <SelectValue placeholder="Today" />
-                                       </SelectTrigger>
-                                       <SelectContent>
-                                          <SelectGroup>
-                                             <SelectItem value="">Today</SelectItem>
-                                             <SelectItem value="3d">3 Hari</SelectItem>
-                                             <SelectItem value="w">1 Minggu</SelectItem>
-                                             <SelectItem value="m">1 Bulan</SelectItem>
-                                          </SelectGroup>
-                                       </SelectContent>
-                                    </Select>
-                                 </div>
-                              }
-                           />
-                           <div className="flex items-center justify-end space-x-2 py-4">
-                              <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() =>
-                                    router.get(transaksi.links.prev, {}, { preserveState: true, preserveScroll: true })
-                                 }
-                                 disabled={transaksi.links.prev === null ? true : false}
-                              >
-                                 Previous
-                              </Button>
-                              <Button
-                                 variant="outline"
-                                 size="sm"
-                                 onClick={() =>
-                                    router.get(transaksi.links.next, {}, { preserveState: true, preserveScroll: true })
-                                 }
-                                 disabled={transaksi.links.next === null ? true : false}
-                              >
-                                 Next
-                              </Button>
-                           </div>
-                        </>
-                     )}
-                  </Deferred>
+
+                  <DataTable
+                     columns={columns({
+                        onEdit: (columnData) => handleEditTogle(columnData),
+                     })}
+                     data={transaksi.data}
+                     filter={
+                        <div className="flex w-fit flex-row gap-5">
+                           <InputSearch onChanges={(e) => handleSearch(e)} />
+                           <Select value={dayFilter} onValueChange={(e) => setDayFilter(e)} required>
+                              <SelectTrigger className="w-full max-w-48">
+                                 <SelectValue placeholder="Today" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                 <SelectGroup>
+                                    <SelectItem value="">Today</SelectItem>
+                                    <SelectItem value="3d">3 Hari</SelectItem>
+                                    <SelectItem value="w">1 Minggu</SelectItem>
+                                    <SelectItem value="m">1 Bulan</SelectItem>
+                                 </SelectGroup>
+                              </SelectContent>
+                           </Select>
+                        </div>
+                     }
+                  />
+                  <div className="flex items-center justify-end space-x-2 py-4">
+                     <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                           router.get(transaksi.links.prev, {}, { preserveState: true, preserveScroll: true })
+                        }
+                        disabled={transaksi.links.prev === null ? true : false}
+                     >
+                        Previous
+                     </Button>
+                     <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                           router.get(transaksi.links.next, {}, { preserveState: true, preserveScroll: true })
+                        }
+                        disabled={transaksi.links.next === null ? true : false}
+                     >
+                        Next
+                     </Button>
+                  </div>
                </CardContent>
             </Card>
          </div>
