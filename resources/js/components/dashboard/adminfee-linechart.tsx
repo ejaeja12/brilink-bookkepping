@@ -1,6 +1,6 @@
+import { usePage } from '@inertiajs/react';
 import * as React from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { ChartConfig } from '@/components/ui/chart';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
@@ -118,11 +118,12 @@ type AdminFeeType = {
 
 type Props = {
    className?: string;
-   adminFee: AdminFeeType[];
 };
 
-export default function AdminFeeLineChart({ className = '', adminFee }: Props) {
+export default function AdminFeeLineChart({ className = '' }: Props) {
    const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('admin_fee');
+
+   const adminFee = usePage().props.adminFeeSum;
 
    return (
       <Card className={`col-span-4 w-full grow-0 bg-white py-4 ${className}`}>

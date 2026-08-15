@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { formatRupiah } from '@/hooks/useFormatCurrency';
 import transaction from '@/routes/transaction';
 import { Button } from '../ui/button';
@@ -14,7 +15,6 @@ type RecentTransaction = {
 
 type Props = {
    className?: string;
-   data: RecentTransaction[] | undefined;
 };
 const timeFormatter = new Intl.DateTimeFormat('id-ID', {
    day: 'numeric',
@@ -24,7 +24,9 @@ const timeFormatter = new Intl.DateTimeFormat('id-ID', {
    minute: '2-digit',
    timeZone: 'Asia/Jakarta', // atau 'UTC'
 });
-export default function RecentTransacation({ className = '', data }: Props) {
+export default function RecentTransacation({ className = '' }: Props) {
+   const data = usePage<{ recentTransaction: RecentTransaction[] }>().props.recentTransaction;
+
    return (
       <Card className={`col-span-4 w-full gap-1 bg-white ${className}`}>
          <CardHeader className="flex w-full flex-row justify-between">

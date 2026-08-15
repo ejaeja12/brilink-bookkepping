@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { formatRupiah } from '@/hooks/useFormatCurrency';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
@@ -10,9 +11,10 @@ type TotalNumberProps = {
 
 type Props = {
    className?: string;
-   totalNumber: TotalNumberProps;
 };
-export default function CardTotalNumber({ className = '', totalNumber }: Props) {
+export default function CardTotalNumber({ className = '' }: Props) {
+   const totalNumber = usePage<{ totalNumber: TotalNumberProps }>().props.totalSumTransaction;
+
    return (
       <Card className={`col-span-4 w-full bg-white ${className}`}>
          <CardHeader>

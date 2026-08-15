@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { TrendingUp } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,9 +28,10 @@ type TransactionCountType = {
 };
 type Props = {
    className?: string;
-   transactionCount: TransactionCountType[];
 };
-export default function TotalTransactionBarChart({ className = '', transactionCount }: Props) {
+export default function TotalTransactionBarChart({ className = '' }: Props) {
+   const transactionCount = usePage<{ transactionCount: TransactionCountType[] }>().props.transactionCount;
+
    return (
       <Card className={`col-span-4 w-full bg-white ${className}`}>
          <CardHeader>

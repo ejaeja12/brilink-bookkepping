@@ -22,11 +22,11 @@ class DashboardController extends Controller
         $adminFeeSum = $this->dashboardService->adminFeeSum();
 
         return Inertia::render('dashboard', [
-            'totalSumTransaction' => $totalTransaction,
-            'transactionCount' => $transactionCount,
-            'recentTransaction' => $recentTransaction,
-            'transactionTypeCount' => $transactionTypeCount,
-            'adminFeeSum' => $adminFeeSum
+            'totalSumTransaction' => Inertia::defer(fn() => $totalTransaction),
+            'transactionCount' => Inertia::defer(fn() => $transactionCount),
+            'recentTransaction' => Inertia::defer(fn() => $recentTransaction),
+            'transactionTypeCount' => Inertia::defer(fn() => $transactionTypeCount),
+            'adminFeeSum' => Inertia::defer(fn() => $adminFeeSum)
         ]);
     }
 }
