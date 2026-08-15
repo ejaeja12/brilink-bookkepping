@@ -28,5 +28,6 @@ class DashboardController extends Controller
             'transactionTypeCount' => Inertia::defer(fn() => $transactionTypeCount),
             'adminFeeSum' => Inertia::defer(fn() => $adminFeeSum)
         ]);
+        // return Inertia::render('dashboard');
     }
 }

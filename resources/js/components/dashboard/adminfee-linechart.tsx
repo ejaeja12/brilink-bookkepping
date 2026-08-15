@@ -123,7 +123,7 @@ type Props = {
 export default function AdminFeeLineChart({ className = '' }: Props) {
    const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('admin_fee');
 
-   const adminFee = usePage().props.adminFeeSum;
+   const adminFee = usePage<{ adminFeeSum: AdminFeeType }>().props.adminFeeSum;
 
    return (
       <Card className={`col-span-4 w-full grow-0 bg-white py-4 ${className}`}>

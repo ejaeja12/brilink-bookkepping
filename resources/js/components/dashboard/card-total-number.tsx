@@ -13,7 +13,7 @@ type Props = {
    className?: string;
 };
 export default function CardTotalNumber({ className = '' }: Props) {
-   const totalNumber = usePage<{ totalNumber: TotalNumberProps }>().props.totalSumTransaction;
+   const totalNumber = usePage<{ totalSumTransaction: TotalNumberProps }>().props.totalSumTransaction;
 
    return (
       <Card className={`col-span-4 w-full bg-white ${className}`}>

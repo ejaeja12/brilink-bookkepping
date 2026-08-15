@@ -75,51 +75,51 @@ class DashboardService
 
     public function transactionCount()
     {
-        // ambil jumlah dari masing-masing jenis transakasi dalam 7 hari terakhir
-        $arrData = [];
+        // ambil jumlah dari  transakasi dalam 7 hari terakhir
 
-        for ($i = 7; $i >= 1; $i--) {
-            $arrData[] = [
-                'date' => now()->subDays($i)->format('d M'),
-                'count' => $this->transaction->whereDate('created_at', '=', now()->subDays($i))->count()
-            ];
-        }
-        json_encode($arrData);
-        return $arrData;
+        $data = $this->transaction
+            ->where('created_at', '>=', now()->subDays(7))
+            ->selectRaw("
+                DATE(created_at) as date, COUNT(*) as count")
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+        json_encode($data);
+        return $data;
     }
 
     public function transactionTypeCount()
     {
-        // ambil jumlah dari masing-masing jenis transakasi dalam 7 hari terakhir
-        $arrData = [];
 
-        for ($i = 7; $i >= 1; $i--) {
-            $query = $this->transaction->whereDate('created_at', '=', now()->subDays($i));
-            $arrData[] = [
-                'date' => now()->subDays($i)->format('d M'),
-                'tarik_tunai' => (clone $query)->where('jenis_transaksi', '=', 'tarik_tunai')->count(),
-                'setor_tunai' => (clone $query)->where('jenis_transaksi', '=', 'setor_tunai')->count(),
-                'pembayaran' => (clone $query)->where('jenis_transaksi', '=', 'pembayaran')->count()
-            ];
-        };
-        json_encode($arrData);
-        return $arrData;
+        $data = $this->transaction
+            ->where('created_at', '>=', now()->subDays(7))
+            ->selectRaw("
+                DATE(created_at) as date,
+                SUM(CASE WHEN jenis_transaksi = 'tarik_tunai' THEN 1 ELSE 0 END) as tarik_tunai,
+                SUM(CASE WHEN jenis_transaksi = 'setor_tunai' THEN 1 ELSE 0 END) as setor_tunai,
+                SUM(CASE WHEN jenis_transaksi = 'pembayaran' THEN 1 ELSE 0 END) as pembayaran
+            ")
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+        json_encode($data);
+        return $data;
     }
 
     public function adminFeeSum()
     {
         // ambil jumlah dari masing-masing jenis transakasi dalam 7 hari terakhir
-        $arrData = [];
 
-        for ($i = 90; $i >= 1; $i--) {
-            $query = $this->transaction->whereDate('created_at', '=', now()->subDays($i));
-            $arrData[] = [
-                'date' => now()->subDays($i)->format('Y-m-d'),
-                'admin_fee' => (clone $query)->sum('biaya_admin'),
+        $data = $this->transaction
+            ->where('created_at', '>=', now()->subDays(90))
+            ->selectRaw('DATE(created_at) as date, SUM(biaya_admin) as admin_fee')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
 
-            ];
-        };
-        json_encode($arrData);
-        return $arrData;
+        json_encode($data);
+        // dd($data);
+        // json_encode($arrData);
+        return $data;
     }
 }

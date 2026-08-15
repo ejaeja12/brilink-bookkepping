@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
 
         $jenisTransaksi = ['pembayaran', 'setor_tunai', 'tarik_tunai'];
 
-        for ($i = 100; $i >= 0; $i--) {
+        for ($i = 30; $i >= 0; $i--) {
             $numberTransactions = random_int(20, 30);
             for ($j = 0; $j <= $numberTransactions; $j++) {
                 $randBank = $createdBanks->random();
