@@ -23,10 +23,10 @@ class DashboardController extends Controller
 
         return Inertia::render('dashboard', [
             'totalSumTransaction' => Inertia::defer(fn() => $totalTransaction),
-            'transactionCount' => Inertia::defer(fn() => $transactionCount),
+            'transactionCount' => Inertia::defer(fn() => $transactionCount)->once(),
             'recentTransaction' => Inertia::defer(fn() => $recentTransaction),
-            'transactionTypeCount' => Inertia::defer(fn() => $transactionTypeCount),
-            'adminFeeSum' => Inertia::defer(fn() => $adminFeeSum)
+            'transactionTypeCount' => Inertia::defer(fn() => $transactionTypeCount)->once(),
+            'adminFeeSum' => Inertia::defer(fn() => $adminFeeSum)->once()
         ]);
         // return Inertia::render('dashboard');
     }
