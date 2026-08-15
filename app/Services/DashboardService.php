@@ -27,27 +27,31 @@ class DashboardService
         };
 
         // cek param query days
-        $qTransaksi->when(
+        $result = $qTransaksi->when(
             $request->missing('days'),
             fn($query) => $query->whereDate('created_at', now()),
             fn($query) => $query->whereDate('created_at', '>=', now()->subDays((int) $day))
-        );
+        )->selectRaw(
+            "SUM(CASE WHEN jenis_transaksi = 'tarik_tunai' THEN nominal ELSE 0 END) as saldo_masuk,
+            SUM(CASE WHEN jenis_transaksi IN ('pembayaran', 'setor_tunai') THEN nominal ELSE 0 END) as saldo_keluar,
+            SUM(biaya_admin) as biaya_admin
+        "
+        )->first();
 
         // pakai clone, kalau gak cuma query terakhir yang jalan karena dia merujuk ke $qtransaksi yang sama
 
-        $saldoMasuk = (clone $qTransaksi)->where('jenis_transaksi', 'tarik_tunai')->sum('nominal');
+        // $saldoMasuk = (clone $qTransaksi)->where('jenis_transaksi', 'tarik_tunai')->sum('nominal');
 
-        $saldoKeluar = (clone $qTransaksi)->whereIn('jenis_transaksi', ['pembayaran', 'setor_tunai'])->sum('nominal');
+        // $saldoKeluar = (clone $qTransaksi)->whereIn('jenis_transaksi', ['pembayaran', 'setor_tunai'])->sum('nominal');
 
-        $biayaAdmin = (clone $qTransaksi)->sum('biaya_admin');
+        // $biayaAdmin = (clone $qTransaksi)->sum('biaya_admin');
 
 
 
-        return [
-            'biaya_admin' => $biayaAdmin,
-            'saldo_keluar' => $saldoKeluar,
-            'saldo_masuk' => $saldoMasuk,
-        ];
+        json_encode($result);
+
+
+        return $result;
     }
 
     public function totalSumDashboard()
