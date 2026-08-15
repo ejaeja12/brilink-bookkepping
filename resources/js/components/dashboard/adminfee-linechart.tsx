@@ -103,24 +103,26 @@ const chartData = [
 
 const chartConfig = {
    views: {
-      label: 'Page Views',
+      label: 'Admin Fee',
    },
-   desktop: {
+   admin_fee: {
       label: 'Desktop',
       color: 'var(--chart-1)',
    },
-   mobile: {
-      label: 'Mobile',
-      color: 'var(--chart-2)',
-   },
 } satisfies ChartConfig;
+
+type AdminFeeType = {
+   date: string;
+   admin_fee: number;
+};
 
 type Props = {
    className?: string;
+   adminFee: AdminFeeType[];
 };
 
-export default function AdminFeeLineChart({ className = '' }: Props) {
-   const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('desktop');
+export default function AdminFeeLineChart({ className = '', adminFee }: Props) {
+   const [activeChart, setActiveChart] = React.useState<keyof typeof chartConfig>('admin_fee');
 
    return (
       <Card className={`col-span-4 w-full grow-0 bg-white py-4 ${className}`}>
@@ -134,7 +136,7 @@ export default function AdminFeeLineChart({ className = '' }: Props) {
             <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
                <LineChart
                   accessibilityLayer
-                  data={chartData}
+                  data={adminFee}
                   margin={{
                      left: 12,
                      right: 12,

@@ -1,13 +1,30 @@
 import { Link } from '@inertiajs/react';
+import { formatRupiah } from '@/hooks/useFormatCurrency';
 import transaction from '@/routes/transaction';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
-type Props = {
-   className?: string;
+type RecentTransaction = {
+   transaksi: string;
+   biaya_layanan: number;
+   biaya_admin: number;
+   nominal: number;
+   created_at: string;
 };
 
-export default function RecentTransacation({ className = '' }: Props) {
+type Props = {
+   className?: string;
+   data: RecentTransaction[] | undefined;
+};
+const timeFormatter = new Intl.DateTimeFormat('id-ID', {
+   day: 'numeric',
+   month: 'long',
+   year: 'numeric',
+   hour: '2-digit',
+   minute: '2-digit',
+   timeZone: 'Asia/Jakarta', // atau 'UTC'
+});
+export default function RecentTransacation({ className = '', data }: Props) {
    return (
       <Card className={`col-span-4 w-full gap-1 bg-white ${className}`}>
          <CardHeader className="flex w-full flex-row justify-between">
@@ -21,76 +38,28 @@ export default function RecentTransacation({ className = '' }: Props) {
             </Link>
          </CardHeader>
          <CardContent className="mt-0 flex flex-col gap-2 overflow-auto p-3 min-[1024px]:max-h-[24rem] min-[1280px]:max-h-[26rem] min-[1500px]:max-h-[30rem] xl:p-4 xl:py-2">
-            <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
-               <div className="flex flex-col">
-                  <span className="text-[0.9rem]">Tarik Tunai Rp. 1.000.000 ke BRI</span>
-                  <span className="text-[0.8rem] text-slate-500">kamis 30 juli, pukul 15:00</span>
-               </div>
+            {data !== undefined &&
+               data.map((val) => (
+                  <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
+                     <div className="flex flex-col">
+                        <span className="text-[0.9rem]">{`${val.transaksi} sebesar ${formatRupiah(val.nominal)}`}</span>
+                        <span className="text-[0.8rem] text-slate-500">
+                           {timeFormatter.format(new Date(val.created_at))}
+                        </span>
+                     </div>
 
-               <div className="flex w-full flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">Biaya layanan</span>
-                     <span className="text-[0.8rem]">Rp. 2.000</span>
+                     <div className="flex w-full flex-col justify-between">
+                        <div className="flex items-center justify-between">
+                           <span className="text-[0.8rem]">Biaya layanan</span>
+                           <span className="text-[0.8rem]">{formatRupiah(val.biaya_layanan)}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                           <span className="text-[0.8rem]">admin fee</span>
+                           <span className="text-end text-[0.8rem]">{formatRupiah(val.biaya_admin)}</span>
+                        </div>
+                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">admin fee</span>
-                     <span className="text-end text-[0.8rem]">Rp. 3.000</span>
-                  </div>
-               </div>
-            </div>
-
-            <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
-               <div className="flex flex-col">
-                  <span className="text-[0.9rem]">Pembayaran BRIVA VIA GOPAY - Rp.1000.000</span>
-                  <span className="text-[0.8rem] text-slate-500">kamis 30 juli, pukul 15:00</span>
-               </div>
-
-               <div className="flex w-full flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">Biaya layanan</span>
-                     <span className="text-[0.8rem]">Rp. 2.000</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">admin fee</span>
-                     <span className="text-end text-[0.8rem]">Rp. 3.000</span>
-                  </div>
-               </div>
-            </div>
-
-            <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
-               <div className="flex flex-col">
-                  <span className="text-[0.9rem]">Pembayaran BRIVA VIA GOPAY - Rp.1000.000</span>
-                  <span className="text-[0.8rem] text-slate-500">kamis 30 juli, pukul 15:00</span>
-               </div>
-
-               <div className="flex w-full flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">Biaya layanan</span>
-                     <span className="text-[0.8rem]">Rp. 2.000</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">admin fee</span>
-                     <span className="text-end text-[0.8rem]">Rp. 3.000</span>
-                  </div>
-               </div>
-            </div>
-            <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
-               <div className="flex flex-col">
-                  <span className="text-[0.9rem]">Pembayaran BRIVA VIA GOPAY - Rp.1000.000</span>
-                  <span className="text-[0.8rem] text-slate-500">kamis 30 juli, pukul 15:00</span>
-               </div>
-
-               <div className="flex w-full flex-col justify-between">
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">Biaya layanan</span>
-                     <span className="text-[0.8rem]">Rp. 2.000</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-[0.8rem]">admin fee</span>
-                     <span className="text-end text-[0.8rem]">Rp. 3.000</span>
-                  </div>
-               </div>
-            </div>
+               ))}
          </CardContent>
       </Card>
    );

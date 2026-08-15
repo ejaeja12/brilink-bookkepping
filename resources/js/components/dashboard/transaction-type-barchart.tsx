@@ -6,12 +6,12 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 export const description = 'A multiple bar chart';
 
 const chartData = [
-   { month: 'January', desktop: 186, mobile: 80 },
-   { month: 'February', desktop: 305, mobile: 200 },
-   { month: 'March', desktop: 237, mobile: 120 },
-   { month: 'April', desktop: 73, mobile: 190 },
-   { month: 'May', desktop: 209, mobile: 130 },
-   { month: 'June', desktop: 214, mobile: 140 },
+   { month: 'January', desktop: 186, mobile: 80, test: 100 },
+   { month: 'February', desktop: 305, mobile: 200, test: 100 },
+   { month: 'March', desktop: 237, mobile: 120, test: 100 },
+   { month: 'April', desktop: 73, mobile: 190, test: 100 },
+   { month: 'May', desktop: 209, mobile: 130, test: 100 },
+   { month: 'June', desktop: 214, mobile: 140, test: 100 },
 ];
 const chartConfig = {
    desktop: {
@@ -23,10 +23,18 @@ const chartConfig = {
       color: 'var(--chart-2)',
    },
 } satisfies ChartConfig;
+
+type TransactionType = {
+   date: string;
+   setor_tunai: number;
+   tarik_tunai: number;
+   transfer_bank: number;
+};
 type Props = {
    className?: string;
+   transactionTypeCount: TransactionType[];
 };
-export default function TransactionTypeBarChart({ className = '' }: Props) {
+export default function TransactionTypeBarChart({ className = '', transactionTypeCount }: Props) {
    return (
       <Card className={`col-span-4 max-h-full w-full bg-white ${className}`}>
          <CardHeader>
@@ -35,18 +43,19 @@ export default function TransactionTypeBarChart({ className = '' }: Props) {
          </CardHeader>
          <CardContent>
             <ChartContainer config={chartConfig}>
-               <BarChart accessibilityLayer data={chartData}>
+               <BarChart accessibilityLayer data={transactionTypeCount}>
                   <CartesianGrid vertical={false} />
                   <XAxis
-                     dataKey="month"
+                     dataKey="date"
                      tickLine={false}
                      tickMargin={10}
                      axisLine={false}
-                     tickFormatter={(value) => value.slice(0, 3)}
+                     tickFormatter={(value) => value.slice(0, 6)}
                   />
                   <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                  <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                  <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                  <Bar dataKey="tarik_tunai" fill="var(--color-desktop)" radius={4} />
+                  <Bar dataKey="setor_tunai" fill="var(--color-mobile)" radius={4} />
+                  <Bar dataKey="pembayaran" fill="var(--color-mobile)" radius={4} />
                </BarChart>
             </ChartContainer>
          </CardContent>
