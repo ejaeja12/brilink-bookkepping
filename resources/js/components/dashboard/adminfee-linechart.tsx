@@ -137,7 +137,7 @@ export default function AdminFeeLineChart({ className = '' }: Props) {
             <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
                <LineChart
                   accessibilityLayer
-                  data={adminFee}
+                  data={adminFee as any}
                   margin={{
                      left: 12,
                      right: 12,
