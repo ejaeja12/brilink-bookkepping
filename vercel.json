@@ -3,7 +3,7 @@
   "outputDirectory": "public",
   "crons": [{
     "path": "/api/cron",
-    "schedule": "0 0 * * *"
+    "schedule": "0 17 * * *"
   }],
   "functions": {
     "api/lambda.php": {
