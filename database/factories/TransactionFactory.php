@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @extends Factory<Transaction>
@@ -18,6 +19,7 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => Uuid::uuid4()->toString(),
             'bank_id' => 'BNI',
             'jenis_transaksi' => 'pembayaran',
             'nominal' => 10000,

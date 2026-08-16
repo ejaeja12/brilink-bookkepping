@@ -24,15 +24,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        //     'password' => bcrypt('password'),
-        // ]);
-
-        // Transaction::factory(5)->create();
 
         $user = User::create([
             'name' => 'Admin User',
@@ -66,41 +57,29 @@ class DatabaseSeeder extends Seeder
         MasterPembayaran::insert($pembayaran);
 
 
-        // Buat transaksi untuk setiap bank
-        // for ($i = 100; $i >= 0; $i--) {
-        //     foreach ($createdBanks as $bank) {
-        //         Transaction::factory()->count(3)->state(
-        //             new Sequence(
-        //                 ['jenis_transaksi' => 'pembayaran'],
-        //                 ['jenis_transaksi' => 'setor_tunai'],
-        //                 ['jenis_transaksi' => 'tarik_tunai'],
-        //             )
-
-        //         )->for($bank)->create([
-        //             'created_at' => now()->subDays($i)
-        //         ]);
-        //     }
-        // }
-
         $jenisTransaksi = ['pembayaran', 'setor_tunai', 'tarik_tunai'];
-
-        for ($i = 30; $i >= 0; $i--) {
+        $rows = [];
+        for ($i = 100; $i >= 0; $i--) {
             $numberTransactions = random_int(20, 30);
             for ($j = 0; $j <= $numberTransactions; $j++) {
                 $randBank = $createdBanks->random();
                 $randPembayaran = array_rand($jenisTransaksi);
-                Transaction::factory()->state(
-                    new Sequence(
-                        [
-                            'jenis_transaksi' => $jenisTransaksi[$randPembayaran],
-                            'nominal' => random_int(1, 10) * 100000
-                        ],
+                $attributes = Transaction::factory()->state(
+                    new Sequence([
+                        'jenis_transaksi' => $jenisTransaksi[$randPembayaran],
+                        'nominal' => random_int(1, 10) * 100000
+                    ],)
 
-                    )
-                )->for($randBank)->create([
+                )->for($randBank)->make([
                     'created_at' => now()->subDays($i)
-                ]);
+                ])->toArray();
+
+                $attributes['updated_at'] = now()->subDays($i);
+
+                $rows[] = $attributes;
             }
         }
+
+        Transaction::insert($rows);
     }
 }
