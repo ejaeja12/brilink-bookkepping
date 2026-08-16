@@ -7,9 +7,22 @@ use App\Http\Controllers\MasterData\MasterPembayaranController;
 use App\Http\Controllers\Reports\TransactionReportController;
 use App\Http\Controllers\TransactionController;
 use App\Models\LogActivity;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
+
+// cron job buat vercel
+Route::get('/api/cron', function (Request $request) {
+
+    if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
+        abort(401);
+    }
+    Artisan::call('migrate:refresh', ['--force' => true]);
+    Artisan::call('db:seed', ['--force' => true]);
+    return response()->json(['status' => 'success']);
+});
 
 Route::inertia('tes', 'tess/TesPAge')->name('tes');
 
