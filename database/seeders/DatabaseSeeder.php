@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class DatabaseSeeder extends Seeder
 {
@@ -70,16 +71,33 @@ class DatabaseSeeder extends Seeder
                         'nominal' => random_int(1, 10) * 100000
                     ],)
 
-                )->for($randBank)->make([
-                    'created_at' => now()->subDays($i)
-                ])->toArray();
+                )->for($randBank)->make()->toArray();
 
+                $attributes['created_at'] = now()->subDays($i);
                 $attributes['updated_at'] = now()->subDays($i);
 
                 $rows[] = $attributes;
             }
         }
+        // dd($rows);
+        Transaction::upsert($rows, ['id']);
 
-        Transaction::insert($rows);
+        // insert ke log activity
+        $activity = [];
+        foreach ($rows as $index => $row) {
+            $activity[] = [
+                'id' => $index,
+                'user_id' => 1,
+                'user' => 'Admin User',
+                'description' => 'create Transaksi ' . $row['jenis_transaksi'],
+                'activity' => 'create ' . $row['jenis_transaksi'],
+                'target_type' => 'Transaksi',
+                'target_id' => $row['id'],
+                'new_values' => json_encode($row),
+                'updated_at' => $row['updated_at'],
+                'created_at' => $row['created_at'],
+            ];
+        }
+        LogActivity::insert($activity);
     }
 }
