@@ -1,10 +1,17 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { login } from '@/routes';
 import { register } from '@/routes';
 import dashboard from '@/routes/dashboard';
 
 export default function Welcome() {
    const { auth } = usePage().props;
+
+   if (auth.user) {
+      router.visit(dashboard.index());
+   } else {
+      router.visit(login());
+   }
 
    return (
       <>
