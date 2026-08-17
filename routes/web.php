@@ -24,8 +24,10 @@ Route::get('/api/cron', function () {
     set_time_limit(300);
 
     try {
+        $originalEnv = app()->environment();
+        app()->instance('env', 'local');
         Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
-
+        app()->instance('env', $originalEnv);
         return response()->json([
             'status' => 'success',
             'output' => Artisan::output()
