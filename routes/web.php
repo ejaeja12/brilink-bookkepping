@@ -19,7 +19,7 @@ Route::get('/api/cron', function (Request $request) {
     // if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
     //     abort(401);
     // }
-    Artisan::call('migrate:refresh', ['--seed' => true]);
+    Artisan::call('migrate:refresh --seed');
     return response()->json(['status' => 'success']);
 });
 
