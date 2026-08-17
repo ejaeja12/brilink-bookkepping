@@ -14,13 +14,28 @@ use Illuminate\Support\Facades\Route;
 Route::inertia('/', 'welcome')->name('home');
 
 // cron job buat vercel
-Route::get('/api/cron', function (Request $request) {
+Route::get('/api/cron', function () {
 
     // if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
     //     abort(401);
     // }
-    Artisan::call('migrate:refresh --seed');
-    return response()->json(['status' => 'success']);
+    // Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
+    // return response()->json(['status' => 'success']);
+    set_time_limit(300);
+
+    try {
+        Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
+
+        return response()->json([
+            'status' => 'success',
+            'output' => Artisan::output()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ], 500);
+    }
 });
 
 
