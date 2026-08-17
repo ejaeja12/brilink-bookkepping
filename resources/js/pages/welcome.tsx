@@ -3,9 +3,10 @@ import { router } from '@inertiajs/react';
 import { login } from '@/routes';
 import { register } from '@/routes';
 import dashboard from '@/routes/dashboard';
+import type { Auth } from '@/types';
 
 export default function Welcome() {
-   const { auth } = usePage().props;
+   const { auth } = usePage<{ auth: Auth }>().props;
 
    if (auth.user) {
       router.visit(dashboard.index());

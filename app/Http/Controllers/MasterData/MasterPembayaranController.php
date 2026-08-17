@@ -5,8 +5,10 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use App\Models\MasterPembayaran;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Inertia\Inertia;
 
+#[Authorize('add.master-data')]
 class MasterPembayaranController extends Controller
 {
     /**

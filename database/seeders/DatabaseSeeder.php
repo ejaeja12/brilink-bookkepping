@@ -15,6 +15,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,14 +28,39 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        $user = User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@test.com',
-            'password' => Hash::make('Tes123456'),
+
+
+        Permission::create(['name' => 'add.transaksi']);
+        Permission::create(['name' => 'edit.transaksi']);
+        Permission::create(['name' => 'add.master-data']);
+        Permission::create(['name' => 'edit.master-data']);
+
+        $ownerRole = Role::create(['name' => 'super-admin']);
+        $adminRole = Role::create(['name' => 'admin']);
+
+        $ownernAccount = User::create([
+            'name' => 'Owner',
+            'email' => 'owner@test.com',
+            'password' => Hash::make('Test123456'),
             'email_verified_at' => now(),
         ]);
 
-        Auth::login($user);
+        $adminAccount = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@test.com',
+            'password' => Hash::make('Test123456'),
+            'email_verified_at' => now(),
+        ]);
+
+        // $ownernAccount->givePermissionTo(Permission::all());
+        $adminRole->givePermissionTo('add.transaksi');
+
+        $ownernAccount->assignRole($ownerRole);
+        $adminAccount->assignRole($adminRole);
+
+
+
+        Auth::login($ownernAccount);
         /**
          * sqlite tidak auto generate uuid, nanti klo dah pake sql hapus aja  str->uuid
          * @id

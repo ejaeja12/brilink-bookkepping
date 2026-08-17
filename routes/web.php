@@ -24,10 +24,9 @@ Route::get('/api/cron', function (Request $request) {
     return response()->json(['status' => 'success']);
 });
 
-Route::inertia('tes', 'tess/TesPAge')->name('tes');
+
 
 Route::group(['middleware' => ['auth']], function () {
-    // Route::inertia('dashboard', 'dashboard')->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::get('/transaction/search', [TransactionController::class, 'search'])->name('transaction.search');
@@ -36,10 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/transaction/{id}', [TransactionController::class, 'update', 'id'])->name('transaction.update');
 
 
-    //
-    // Route::middleware(['auth', 'verified'])->group(function () {
-    //     Route::inertia('dashboard', 'dashboard')->name('dashboard');
-    // });
+
 
     Route::resource('master-banks', MasterBankController::class);
     Route::resource('master-pembayarans', MasterPembayaranController::class);

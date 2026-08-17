@@ -37,9 +37,9 @@ export default function Login({ status, canResetPassword }: Props) {
                <div className="w-full text-center underline">Akun Demo</div>
                <div className="flex flex-col">
                   <br />
-                  <span>akun Admin&ensp;: admin@test.com</span>
-                  <span>akun Admin&ensp;: admin@test.com</span>
-                  <span>Password&ensp;&ensp;&ensp;: Tes123456</span>
+                  <span>akun owner&ensp;: owner@test.com</span>
+                  <span>akun admin&ensp;: admin@test.com</span>
+                  <span>Password&ensp;&ensp;&ensp;: Test123456</span>
                </div>
             </CardContent>
          </Card>

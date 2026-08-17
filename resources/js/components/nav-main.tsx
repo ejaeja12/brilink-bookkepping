@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import {
    SidebarGroup,
    SidebarGroupLabel,
@@ -18,6 +19,9 @@ type Props = {
 
 export function NavMain({ items = [], reportItems = [], masterItems = [], logActivity = [] }: Props) {
    const { isCurrentUrl } = useCurrentUrl();
+
+   const { auth } = usePage<{ auth: any }>().props;
+   const isRoleSuperAdmin = auth.role && auth?.role?.includes('super-admin');
 
    return (
       <SidebarGroup className="px-2 py-0">
@@ -47,19 +51,28 @@ export function NavMain({ items = [], reportItems = [], masterItems = [], logAct
                </SidebarMenuItem>
             ))}
          </SidebarMenu>
-         <SidebarGroupLabel>Master Data</SidebarGroupLabel>
-         <SidebarMenu>
-            {masterItems?.map((item) => (
-               <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isCurrentUrl(item.href)} tooltip={{ children: item.title }}>
-                     <Link href={item.href} prefetch>
-                        {item.icon && <item.icon />}
-                        <span>{item.title}</span>
-                     </Link>
-                  </SidebarMenuButton>
-               </SidebarMenuItem>
-            ))}
-         </SidebarMenu>
+         {/* master Data */}
+         {isRoleSuperAdmin && (
+            <>
+               <SidebarGroupLabel>Master Data</SidebarGroupLabel>
+               <SidebarMenu>
+                  {masterItems?.map((item) => (
+                     <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                           asChild
+                           isActive={isCurrentUrl(item.href)}
+                           tooltip={{ children: item.title }}
+                        >
+                           <Link href={item.href} prefetch>
+                              {item.icon && <item.icon />}
+                              <span>{item.title}</span>
+                           </Link>
+                        </SidebarMenuButton>
+                     </SidebarMenuItem>
+                  ))}
+               </SidebarMenu>
+            </>
+         )}
 
          <SidebarGroupLabel>Log</SidebarGroupLabel>
          <SidebarMenu>
