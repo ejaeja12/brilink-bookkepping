@@ -14,9 +14,11 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -113,7 +115,7 @@ class DatabaseSeeder extends Seeder
         $activity = [];
         foreach ($rows as $index => $row) {
             $activity[] = [
-                'id' => $index,
+                'id' => 'LOG' . date('ymd') . Str::random(8),
                 'user_id' => 1,
                 'user' => 'Admin User',
                 'description' => 'create Transaksi ' . $row['jenis_transaksi'],
