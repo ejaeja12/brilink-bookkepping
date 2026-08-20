@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function InputSearch({ onChanges }: Props) {
-   return <Input placeholder="Search..." className="min-w-sm" onChange={(e) => onChanges?.(e.target.value)} />;
+   return <Input placeholder="Search..." className="max-w-xl" onChange={(e) => onChanges?.(e.target.value)} />;
 }

@@ -42,7 +42,7 @@ export default function RecentTransacation({ className = '' }: Props) {
          <CardContent className="mt-0 flex flex-col gap-2 overflow-auto p-3 min-[1024px]:max-h-[22rem] min-[1280px]:max-h-[24rem] min-[1500px]:max-h-[28rem] xl:p-4 xl:py-2">
             {data !== undefined &&
                data.map((val) => (
-                  <div className="flex flex-col gap-4 rounded-lg border border-slate-300 p-3 xl:p-5 xl:py-3">
+                  <div className="flex flex-col gap-4 rounded-lg border-2 border-border p-3 xl:p-5 xl:py-3">
                      <div className="flex flex-col">
                         <span className="text-[0.9rem]">{`${val.transaksi} sebesar ${formatRupiah(val.nominal)}`}</span>
                         <span className="text-[0.8rem] text-slate-500">

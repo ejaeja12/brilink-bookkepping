@@ -107,7 +107,7 @@ export default function ReportTransaction({ transaksi }: { transaksi: any }) {
                      })}
                      data={transaksi.data}
                      filter={
-                        <div className="flex w-fit flex-row gap-5">
+                        <div className="flex w-full flex-col-reverse gap-5 md:flex-row">
                            <InputSearch onChanges={(e) => handleSearch(e)} />
                            <DatePickerWithRange onChange={handleDate}></DatePickerWithRange>
                         </div>

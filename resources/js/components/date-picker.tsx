@@ -29,7 +29,7 @@ export function DatePickerWithRange({ onChange = undefined }: Props) {
    }
 
    return (
-      <Field className="mx-auto w-60">
+      <Field className="w-fit">
          <Popover>
             <PopoverTrigger asChild>
                <Button variant="outline" id="date-picker-range" className="justify-start px-2.5 font-normal">

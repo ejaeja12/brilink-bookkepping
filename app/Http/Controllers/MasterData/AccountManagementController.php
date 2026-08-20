@@ -33,4 +33,13 @@ class AccountManagementController extends Controller
         ]);
         $this->accountService->store($validate);
     }
+
+    public function update(Request $request, int $id)
+    {
+        $validate = $request->validate([
+            'status' => ['required', 'in:active,nonactive'],
+            'role' => ['required', 'in:super-admin,admin'],
+        ]);
+        $this->accountService->update($validate, $id);
+    }
 }

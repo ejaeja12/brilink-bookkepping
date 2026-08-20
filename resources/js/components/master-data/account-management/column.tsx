@@ -47,7 +47,7 @@ function statusBadge(tr: string) {
 export const accountManagementColumn = ({
    actionEdit,
 }: {
-   actionEdit: (e: string) => void;
+   actionEdit: (e: number) => void;
 }): ColumnDef<UserRoleType>[] => [
    {
       accessorKey: 'id',
@@ -104,7 +104,7 @@ export const accountManagementColumn = ({
             <div className="flex w-full justify-center">
                <Badge
                   variant={'outline'}
-                  className={`border lg:w-1/4 ${row.getValue('status') === 'active' ? 'border-blue-500' : 'border-slate-500'}`}
+                  className={`w-full border md:w-3/4 lg:w-20 ${row.getValue('status') === 'active' ? 'border-blue-500' : 'border-slate-500'}`}
                >
                   {statusBadge(row.getValue('status'))}
                </Badge>

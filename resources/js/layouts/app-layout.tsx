@@ -12,7 +12,7 @@ export default function AppLayout({
    return (
       <div>
          <AppLayoutTemplate breadcrumbs={breadcrumbs}>
-            <div className="p-6">{children}</div>
+            <div className="p-2 min-[375px]:p-3 md:p-5">{children}</div>
          </AppLayoutTemplate>
       </div>
    );

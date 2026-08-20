@@ -50,7 +50,7 @@ export function DataTable<TData, TValue>({ columns, data, filter }: DataTablePro
 
    return (
       <div>
-         <div className="flex items-center py-4">
+         <div className="flex flex-col-reverse items-center gap-1 py-4 sm:flex-row">
             {filter}
             <DropdownMenu>
                <DropdownMenuTrigger asChild>

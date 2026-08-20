@@ -28,4 +28,11 @@ class AccountManagementServie
         $user = $this->user->create($request);
         $user->assignRole($request['role']);
     }
+
+    public function update(array $request, int $id)
+    {
+        $user = $this->user->find($id);
+        $user->update(['status' => $request['status']]);
+        $user->syncRoles($request['role']);
+    }
 }

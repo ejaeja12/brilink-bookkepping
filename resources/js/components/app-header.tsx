@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, SunIcon, MoonIcon } from 'lucide-react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -7,10 +7,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/user-menu-content';
-
+import { useAppearance } from '@/hooks/use-appearance';
 import { useInitials } from '@/hooks/use-initials';
 import { toUrl } from '@/lib/utils';
 import dashboard from '@/routes/dashboard';
+import type { Auth } from '@/types';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -41,6 +42,7 @@ const rightNavItems: NavItem[] = [
 export function AppHeader({ breadcrumbs = [] }: Props) {
    const page = usePage();
    const { auth } = page.props;
+   const { appearance, updateAppearance } = useAppearance();
    const getInitials = useInitials();
 
    return (
@@ -48,7 +50,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
          <div className="sticky border-b border-sidebar-border/80">
             <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                {/* Mobile Menu */}
-               <div className="lg:hidden">
+               {/* <div className="lg:hidden">
                   <Sheet>
                      <SheetTrigger asChild>
                         <Button variant="ghost" size="icon" className="mr-2 h-[34px] w-[34px]">
@@ -93,15 +95,12 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                         </div>
                      </SheetContent>
                   </Sheet>
-               </div>
+               </div> */}
 
-               <div className="ml-auto flex items-center space-x-2">
+               <div className="ml-auto flex items-center gap-5 space-x-2">
                   <div className="relative flex items-center space-x-1">
-                     <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                        <Search className="!size-5 opacity-80 group-hover:opacity-100" />
-                     </Button>
-                     <div className="ml-1 hidden gap-1 lg:flex">
-                        {rightNavItems.map((item) => (
+                     <div className="ml-1 gap-1 lg:flex">
+                        {/* {rightNavItems.map((item) => (
                            <Tooltip key={item.title}>
                               <TooltipTrigger>
                                  <a
@@ -118,7 +117,26 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                  <p>{item.title}</p>
                               </TooltipContent>
                            </Tooltip>
-                        ))}
+                        ))} */}
+                        {/* togle theme : dark | light */}
+                        <Tooltip>
+                           <TooltipTrigger>
+                              <Button
+                                 variant={'ghost'}
+
+                                 onClick={() => updateAppearance(appearance === 'light' ? 'dark' : 'light')}
+                              >
+                                 {appearance === 'light' ? (
+                                    <MoonIcon className="size-5 opacity-80 group-hover:opacity-100" />
+                                 ) : (
+                                    <SunIcon className="size-5 opacity-80 group-hover:opacity-100" />
+                                 )}
+                              </Button>
+                           </TooltipTrigger>
+                           <TooltipContent>
+                              <p>{appearance === 'light' ? 'Dark Mode' : 'Light Mode'}</p>
+                           </TooltipContent>
+                        </Tooltip>
                      </div>
                   </div>
                   <DropdownMenu>

@@ -10,16 +10,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AccountManagement({ users }: { users: UserRoleType[] }) {
    const [open, setOpen] = useState(false);
-   const [editId, setEditId] = useState('');
+   const [editId, setEditId] = useState(0);
 
-   function handleEditDialog(id: string) {
+   function handleEditDialog(id: number) {
       setOpen(true);
       setEditId(id);
    }
 
    function handleCloseDialog() {
       setOpen(false);
-      setEditId('');
+      setEditId(0);
    }
 
    return (
@@ -41,10 +41,13 @@ export default function AccountManagement({ users }: { users: UserRoleType[] }) 
                   <CreateUser editId={editId} onSuccessCallBack={() => handleCloseDialog()} />
                </DialogInput>
             </CardHeader>
-            <CardContent className="flex flex-col gap-5">
+            <CardContent className="flex flex-col gap-5 p-1 md:p-5">
                {/* Deffered itu fungsi bawaan inertia, lazy load data*/}
 
-               <DataTable columns={accountManagementColumn({ actionEdit: (e: string) => {} })} data={users}></DataTable>
+               <DataTable
+                  columns={accountManagementColumn({ actionEdit: (e) => handleEditDialog(e) })}
+                  data={users}
+               ></DataTable>
                <div className="flex items-center justify-end space-x-2 py-4">
                   <Button variant="outline" size="sm" onClick={() => {}} disabled={true}>
                      Previous

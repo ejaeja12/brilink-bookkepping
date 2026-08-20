@@ -13,6 +13,7 @@ import TabsCreateTransaction from '@/components/input-transaction/TabsCreateTran
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { formatRupiah } from '@/hooks/useFormatCurrency';
 import transaction from '@/routes/transaction';
@@ -22,6 +23,7 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
    const [editId, setEditId] = useState('');
    const [search, setSearch] = useState('');
    const [dayFilter, setDayFilter] = useState('');
+   const isMobile = useIsMobile();
 
    const { statistic } = usePage<{ statistic: any }>().props;
 
@@ -66,11 +68,34 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
       <>
          <Head title="Dashboard" />
          <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-12 gap-4">
-               <CardStatistic title="Saldo Keluar" content={formatRupiah(statistic.saldo_keluar)}></CardStatistic>
-               <CardStatistic title="Saldo Masuk" content={formatRupiah(statistic.saldo_masuk)}></CardStatistic>
-               <CardStatistic title="Admin Fee" content={formatRupiah(statistic.biaya_admin)}></CardStatistic>
-            </div>
+            {isMobile ? (
+               <>
+                  <div>
+                     <Card>
+                        <CardContent className="justify-between min-[425px]:flex">
+                           <div className="flex max-[425px]:justify-between max-[425px]:text-[0.9rem] min-[425px]:flex-col">
+                              <span className="font-bold"> Saldo Keluar</span>
+                              <span>{formatRupiah(statistic.saldo_keluar)}</span>
+                           </div>
+                           <div className="flex max-[425px]:justify-between max-[425px]:text-[0.9rem] min-[425px]:flex-col">
+                              <span className="font-bold">Saldo Masuk</span>
+                              <span>{formatRupiah(statistic.saldo_masuk)}</span>
+                           </div>
+                           <div className="flex max-[425px]:justify-between max-[425px]:text-[0.9rem] min-[425px]:flex-col">
+                              <span className="font-bold">Biaya Admin</span>
+                              <span>{formatRupiah(statistic.biaya_admin)}</span>
+                           </div>
+                        </CardContent>
+                     </Card>
+                  </div>
+               </>
+            ) : (
+               <div className="grid grid-cols-12 gap-4">
+                  <CardStatistic title="Saldo Keluar" content={formatRupiah(statistic.saldo_keluar)}></CardStatistic>
+                  <CardStatistic title="Saldo Masuk" content={formatRupiah(statistic.saldo_masuk)}></CardStatistic>
+                  <CardStatistic title="Admin Fee" content={formatRupiah(statistic.biaya_admin)}></CardStatistic>
+               </div>
+            )}
 
             {/* Table */}
             <Card className="w-full border-2 bg-card">
@@ -101,10 +126,10 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
                      })}
                      data={transaksi.data}
                      filter={
-                        <div className="flex w-fit flex-row gap-5">
+                        <div className="flex w-full flex-row gap-5">
                            <InputSearch onChanges={(e) => handleSearch(e)} />
                            <Select value={dayFilter} onValueChange={(e) => setDayFilter(e)} required>
-                              <SelectTrigger className="w-full max-w-48">
+                              <SelectTrigger className="w-fit max-w-32">
                                  <SelectValue placeholder="Today" />
                               </SelectTrigger>
                               <SelectContent>
