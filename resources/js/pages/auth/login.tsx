@@ -32,7 +32,7 @@ export default function Login({ status, canResetPassword }: Props) {
    return (
       <>
          <Head title="Log in" />
-         <Card className="text-md left-2 border border-blue-600 bg-white py-1 md:fixed md:py-5 lg:bottom-12 lg:left-5">
+         <Card className="text-md left-2 border border-blue-600 bg-background py-1 md:fixed md:py-5 lg:bottom-12 lg:left-5">
             <CardContent className="text-[0.8rem] font-semibold md:text-[0.9rem]">
                <div className="w-full text-center underline">Akun Demo</div>
                <div className="flex flex-col">
@@ -43,7 +43,7 @@ export default function Login({ status, canResetPassword }: Props) {
                </div>
             </CardContent>
          </Card>
-         <Card className="bg-white">
+         <Card className="bg-background">
             <CardHeader></CardHeader>
             <CardContent>
                <Form {...store.form()} resetOnSuccess={['password']} className="flex flex-col gap-6">

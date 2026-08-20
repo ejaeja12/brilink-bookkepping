@@ -90,7 +90,7 @@ export default function ReportTransaction({ transaksi }: { transaksi: any }) {
          <Head title="Dashboard" />
          <div className="flex flex-col gap-8">
             {/* Table */}
-            <Card className="w-full border-2 bg-white">
+            <Card className="w-full border-2 bg-card">
                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xl">Transaksi</CardTitle>
                   <Button variant={'secondary'} onClick={() => handleGeneratePdf()}>

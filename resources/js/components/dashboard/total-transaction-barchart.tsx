@@ -6,15 +6,12 @@ import type { ChartConfig } from '@/components/ui/chart';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 export const description = 'A multiple bar chart';
 
-const chartData = [
-   { month: 'January', desktop: 186 },
-   { month: 'February', desktop: 305 },
-   { month: 'March', desktop: 237 },
-   { month: 'April', desktop: 73 },
-   { month: 'May', desktop: 209 },
-   { month: 'June', desktop: 214 },
-   { month: 'June', desktop: 214 },
-];
+const timeFormatter = new Intl.DateTimeFormat('id-ID', {
+   day: 'numeric',
+   month: 'short',
+   timeZone: 'Asia/Jakarta',
+});
+
 const chartConfig = {
    count: {
       label: 'Count',
@@ -33,10 +30,10 @@ export default function TotalTransactionBarChart({ className = '' }: Props) {
    const transactionCount = usePage<{ transactionCount: TransactionCountType[] }>().props.transactionCount;
 
    return (
-      <Card className={`col-span-4 w-full bg-white ${className}`}>
+      <Card className={`col-span-4 w-full bg-card ${className}`}>
          <CardHeader>
-            <CardTitle>Bar Chart - Multiple</CardTitle>
-            <CardDescription>January - June 2024</CardDescription>
+            <CardTitle>Total Transaksi</CardTitle>
+            <CardDescription>7 Hari terakhir</CardDescription>
          </CardHeader>
          <CardContent>
             <ChartContainer config={chartConfig}>
@@ -54,7 +51,7 @@ export default function TotalTransactionBarChart({ className = '' }: Props) {
                      tickMargin={11}
                      axisLine={false}
 
-                     tickFormatter={(value) => value.slice(0, 5)}
+                     tickFormatter={(value) => timeFormatter.format(new Date(value))}
                   />
                   <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
                   <Bar dataKey="count" fill="var(--chart-1)" radius={4}>
@@ -63,12 +60,7 @@ export default function TotalTransactionBarChart({ className = '' }: Props) {
                </BarChart>
             </ChartContainer>
          </CardContent>
-         <CardFooter className="flex-col items-start gap-2 text-sm">
-            <div className="flex gap-2 leading-none font-medium">
-               Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
-         </CardFooter>
+         <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
       </Card>
    );
 }

@@ -78,7 +78,7 @@ export function DataTable<TData, TValue>({ columns, data, filter }: DataTablePro
             </DropdownMenu>
          </div>
          <div className="overflow-hidden rounded-md border">
-            <Table>
+            <Table className="">
                <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
                      <TableRow key={headerGroup.id}>
@@ -99,7 +99,7 @@ export function DataTable<TData, TValue>({ columns, data, filter }: DataTablePro
                      table.getRowModel().rows.map((row) => (
                         <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                            {row.getVisibleCells().map((cell) => (
-                              <TableCell key={cell.id}>
+                              <TableCell className="py-3" key={cell.id}>
                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                               </TableCell>
                            ))}

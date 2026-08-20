@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Logs\LogActivityController;
+use App\Http\Controllers\MasterData\AccountManagementController as MasterDataAccountManagementController;
 use App\Http\Controllers\MasterData\MasterBankController;
 use App\Http\Controllers\MasterData\MasterPembayaranController;
 use App\Http\Controllers\Reports\TransactionReportController;
@@ -19,8 +20,7 @@ Route::get('/api/cron', function (Request $request) {
     if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
         abort(401);
     }
-    // Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
-    // return response()->json(['status' => 'success']);
+
     set_time_limit(300);
 
     try {
@@ -51,18 +51,20 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
+    // master Data
 
-    Route::resource('master-banks', MasterBankController::class);
-    Route::resource('master-pembayarans', MasterPembayaranController::class);
+
+    Route::prefix('/masters')->middleware('role:super-admin')->name('data')->group(function () {
+        Route::resource('master-banks', MasterBankController::class);
+        Route::resource('master-pembayarans', MasterPembayaranController::class);
+        Route::resource('master-akun', MasterDataAccountManagementController::class);
+    });
 
     // Report
     Route::prefix('/reports')->name('report')->group(function () {
         Route::get('transaction/create-report', [TransactionReportController::class, 'createReport'])->name('transaction.create-report');
         Route::resource('transaction', TransactionReportController::class);
     });
-
-
-
 
     // log Activity
     Route::get('/log-activity', [LogActivityController::class, 'index'])->name('log-activity.index');

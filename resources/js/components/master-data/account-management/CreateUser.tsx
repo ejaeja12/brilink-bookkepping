@@ -3,25 +3,27 @@ import { usePage } from '@inertiajs/react';
 import InputField from '@/components/InputField';
 import { toastError, toastSuccess } from '@/components/toastNotif';
 import { Button } from '@/components/ui/button';
-import { FieldSet, FieldGroup, Field } from '@/components/ui/field';
+import { FieldSet, FieldTitle, FieldGroup, Field } from '@/components/ui/field';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import datamasterBanks from '@/routes/datamaster-banks';
+import datamasterAkun from '@/routes/datamaster-akun';
 
 type Props = {
    editId?: string;
    onSuccessCallBack?: () => void;
 };
 
-type BankData = {
+type UserType = {
    id: string;
    name: string;
+   email: string;
+   password: string;
    status: string;
 };
 
-export default function CreateBankData({ editId = '', onSuccessCallBack = () => {} }: Props) {
+export default function CreateUser({ editId = '', onSuccessCallBack = () => {} }: Props) {
    // const [editId, setEditId] = useState('');
-   const { bankData } = usePage<{ bankData: BankData[] }>().props;
+   const { bankData } = usePage<{ bankData: UserType[] }>().props;
    function getDataById() {
       // mencari data berdasarkan props editId
 
@@ -35,8 +37,11 @@ export default function CreateBankData({ editId = '', onSuccessCallBack = () => 
    console.log('bankData', bankData);
    console.log('editId', getDataById());
 
-   const { post, setData, data, put } = useForm({
+   const { post, setData, data, put, errors } = useForm({
       name: getDataById()?.name ?? '',
+      email: getDataById()?.email ?? '',
+      password: getDataById()?.password ?? '',
+      role: 'admin',
       status: getDataById()?.status ?? 'active',
    });
 
@@ -55,7 +60,7 @@ export default function CreateBankData({ editId = '', onSuccessCallBack = () => 
             data.name,
 
             () =>
-               put(datamasterBanks.update.url(editId), {
+               put(datamasterAkun.update.url(editId), {
                   onFinish: () => {
                      toastSuccess(JSON.stringify(data));
                      onSuccessCallBack();
@@ -67,10 +72,13 @@ export default function CreateBankData({ editId = '', onSuccessCallBack = () => 
             data.name,
 
             () =>
-               post(datamasterBanks.store.url(), {
-                  onFinish: () => {
+               post(datamasterAkun.store.url(), {
+                  onSuccess: () => {
                      toastSuccess('Bank berhasil ditambahkan');
                      onSuccessCallBack();
+                  },
+                  onError: () => {
+                     toastError(JSON.stringify(errors));
                   },
                }),
          );
@@ -80,9 +88,32 @@ export default function CreateBankData({ editId = '', onSuccessCallBack = () => 
    return (
       <>
          <FieldSet>
+            <FieldTitle className="mb-3 text-xl font-bold">Create User</FieldTitle>
             <FieldGroup>
-               <Field>{data.status}</Field>
-               <InputField label="Name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
+               {/* name */}
+               <InputField
+                  label="Name"
+                  placeHolder="Nama Lengkap"
+                  value={data.name}
+                  onChange={(e) => setData('name', e.target.value)}
+               />
+               {/* email*/}
+               <InputField
+                  label="Email"
+                  placeHolder="Email"
+                  value={data.email}
+                  onChange={(e) => setData('email', e.target.value)}
+               />
+               {/* password */}
+               <InputField
+                  label="Password"
+                  placeHolder="Password"
+                  value={data.password}
+                  password
+                  onChange={(e) => setData('password', e.target.value)}
+               />
+               {/* role */}
+               <InputField label="Role" value={data.role} onChange={(e) => setData('role', e.target.value)} />
                <Field>
                   <Label>Status</Label>
                   <Switch

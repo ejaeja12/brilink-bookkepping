@@ -9,19 +9,19 @@ export default function TabsCreateTransaction({ callBack }: { callBack: () => vo
          <TabsList className="h-16! w-full gap-12" variant={'line'}>
             <TabsTrigger
                value="setor"
-               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-slate-200 data-[state=active]:bg-blue-100!"
+               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-muted data-[state=active]:bg-accent!"
             >
                Setor
             </TabsTrigger>
             <TabsTrigger
                value="tarik"
-               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-slate-200 data-[state=active]:bg-blue-100!"
+               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-muted data-[state=active]:bg-accent!"
             >
                Tarik
             </TabsTrigger>
             <TabsTrigger
                value="pembayaran"
-               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-slate-200 data-[state=active]:bg-blue-100!"
+               className="rounded-3xl border-slate-400! after:opacity-0! hover:bg-muted data-[state=active]:bg-accent!"
             >
                Pembayaran
             </TabsTrigger>

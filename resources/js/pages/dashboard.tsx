@@ -9,7 +9,7 @@ import dashboard from '@/routes/dashboard';
 
 export default function Dashboard() {
    return (
-      <main className="flex min-h-screen flex-col gap-2">
+      <main className="flex min-h-screen flex-col gap-5">
          {/* Row 1 */}
          <section className="grid w-full grid-cols-12 justify-between gap-6">
             <div className="col-span-12 flex flex-col gap-7 lg:col-span-8">

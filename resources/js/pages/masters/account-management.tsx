@@ -1,17 +1,14 @@
-import { Head } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/data_table/data-table';
-import InputSearch from '@/components/data_table/input-search';
 import DialogInput from '@/components/DialogInput';
-import { bankColumn } from '@/components/master-data/bank_master/BankColumn';
-import CreateBankData from '@/components/master-data/bank_master/CreateBankData';
+import type { UserRoleType } from '@/components/master-data/account-management/column';
+import { accountManagementColumn } from '@/components/master-data/account-management/column';
+import CreateUser from '@/components/master-data/account-management/CreateUser';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import datamasterBanks from '@/routes/datamaster-banks';
-
-export default function MasterBank({ bankData }: { bankData: any }) {
+export default function AccountManagement({ users }: { users: UserRoleType[] }) {
    const [open, setOpen] = useState(false);
    const [editId, setEditId] = useState('');
 
@@ -27,43 +24,27 @@ export default function MasterBank({ bankData }: { bankData: any }) {
 
    return (
       <>
-         <Head title="Bank Data" />
-
-         {/* Dialog Add Master Data : Bank */}
-
-         {/* Table */}
          <Card className="w-full border-2 bg-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-               <CardTitle className="text-xl">Bank Data</CardTitle>
+               <CardTitle className="text-xl">Data User</CardTitle>
+
                <DialogInput
                   openState={open}
                   setCloseState={() => handleCloseDialog()}
                   trigger={
                      <Button onClick={() => setOpen(true)} className="w-fit">
                         <Plus />
-                        Tambah Bank
+                        Tambah User
                      </Button>
                   }
                >
-                  <CreateBankData editId={editId} onSuccessCallBack={() => handleCloseDialog()} />
+                  <CreateUser editId={editId} onSuccessCallBack={() => handleCloseDialog()} />
                </DialogInput>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
                {/* Deffered itu fungsi bawaan inertia, lazy load data*/}
 
-               <DataTable
-                  columns={bankColumn({
-                     actionEdit: (e) => {
-                        handleEditDialog(e);
-                     },
-                  })}
-                  data={bankData}
-                  filter={
-                     <div className="flex w-fit flex-row gap-5">
-                        <InputSearch onChanges={() => {}} />
-                     </div>
-                  }
-               />
+               <DataTable columns={accountManagementColumn({ actionEdit: (e: string) => {} })} data={users}></DataTable>
                <div className="flex items-center justify-end space-x-2 py-4">
                   <Button variant="outline" size="sm" onClick={() => {}} disabled={true}>
                      Previous
@@ -77,12 +58,3 @@ export default function MasterBank({ bankData }: { bankData: any }) {
       </>
    );
 }
-
-MasterBank.layout = {
-   breadcrumbs: [
-      {
-         title: 'Master Data : Bank',
-         href: datamasterBanks.index(),
-      },
-   ],
-};

@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { MoreHorizontal } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 import { Button } from '@/components/ui/button';
@@ -60,7 +61,8 @@ export const columns = ({ onEdit }: { onEdit: (x: any) => void }): ColumnDef<Pay
          return (
             <div className="w-full">
                <Badge
-                  className={`w-1/2 ${row.getValue('jenis_transaksi') === 'tarik_tunai' ? 'bg-green-50 text-green-700' : 'bg-blue-50 text-blue-700'}`}
+                  variant={'outline'}
+                  className={`w-1/2 ${row.getValue('jenis_transaksi') === 'tarik_tunai' ? 'border-green-500 text-foreground' : 'border-blue-500'}`}
                >
                   {transactionBadge(row.getValue('jenis_transaksi'))}
                </Badge>
@@ -74,7 +76,7 @@ export const columns = ({ onEdit }: { onEdit: (x: any) => void }): ColumnDef<Pay
       cell: ({ row }) => {
          return (
             <div
-               className={`${row.getValue('jenis_transaksi') == 'tarik_tunai' ? 'text-green-600' : 'text-black'} font-semibold`}
+               className={`${row.getValue('jenis_transaksi') == 'tarik_tunai' ? 'text-green-600' : 'text-foreground'} font-semibold`}
             >
                {row.getValue('jenis_transaksi') == 'tarik_tunai' ? '+ ' : '- '}
                {formatRupiah(row.getValue('nominal'))}
@@ -113,23 +115,27 @@ export const columns = ({ onEdit }: { onEdit: (x: any) => void }): ColumnDef<Pay
    },
    {
       id: 'actions',
+      header: 'Actions',
       cell: ({ row }) => {
          return (
-            <DropdownMenu>
-               <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                     <span className="sr-only">Open menu</span>
-                     <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-               </DropdownMenuTrigger>
-               <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => onEdit(row.getValue('id'))}>Edit</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>View customer</DropdownMenuItem>
-                  <DropdownMenuItem>View payment details</DropdownMenuItem>
-               </DropdownMenuContent>
-            </DropdownMenu>
+            // <DropdownMenu>
+            //    <DropdownMenuTrigger asChild>
+            //       <Button variant="ghost" className="h-8 w-8 p-0">
+            //          <span className="sr-only">Open menu</span>
+            //          <MoreHorizontal className="h-4 w-4" />
+            //       </Button>
+            //    </DropdownMenuTrigger>
+            //    <DropdownMenuContent align="end">
+            //       <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            //       <DropdownMenuItem onClick={() => onEdit(row.getValue('id'))}>Edit</DropdownMenuItem>
+            //       <DropdownMenuSeparator />
+            //       <DropdownMenuItem>View customer</DropdownMenuItem>
+            //       <DropdownMenuItem>View payment details</DropdownMenuItem>
+            //    </DropdownMenuContent>
+            // </DropdownMenu>
+            <Button size="icon" variant="ghost" className="py-1" onClick={() => onEdit(row.getValue('id'))}>
+               <Pencil />
+            </Button>
          );
       },
    },

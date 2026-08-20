@@ -14,6 +14,19 @@ import {
    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
+export type RoleType = {
+   role_id: string;
+   role_name: string;
+};
+
+export type UserRoleType = {
+   id: string;
+   name: string;
+   email: string;
+   status: 'active' | 'nonactive';
+   roles: RoleType[];
+};
+
 export type BankData = {
    id: string;
    name: string;
@@ -31,7 +44,11 @@ function statusBadge(tr: string) {
    }
 }
 
-export const bankColumn = ({ actionEdit }: { actionEdit: (e: string) => void }): ColumnDef<BankData>[] => [
+export const accountManagementColumn = ({
+   actionEdit,
+}: {
+   actionEdit: (e: string) => void;
+}): ColumnDef<UserRoleType>[] => [
    {
       accessorKey: 'id',
       // header: () => <div className="hidden w-0">ID</div>,
@@ -50,6 +67,25 @@ export const bankColumn = ({ actionEdit }: { actionEdit: (e: string) => void }):
          return (
             <div className="flex w-full justify-center">
                <span className="w-1/4">{row.getValue('name')}</span>
+            </div>
+         );
+      },
+   },
+   {
+      accessorKey: 'roles',
+      header: () => {
+         return (
+            <div className="flex w-full justify-center">
+               <span className="w-1/4 font-semibold">Role</span>
+            </div>
+         );
+      },
+      cell: ({ row }) => {
+         const role: RoleType[] = row.getValue('roles');
+
+         return (
+            <div className="flex w-full justify-center">
+               <span className="w-1/4">{role.map((r) => r.role_name).join(', ')}</span>
             </div>
          );
       },

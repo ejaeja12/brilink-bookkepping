@@ -7,7 +7,7 @@ type Props = {
 
 export default function CardStatistic({ title, content }: Props) {
    return (
-      <Card className="col-span-4 bg-white">
+      <Card className="col-span-4 bg-card">
          <CardHeader>
             <CardTitle>{title}</CardTitle>
          </CardHeader>

@@ -10,7 +10,7 @@ import { pembayaranColumn } from '@/components/master-data/pembayaran_master/Pem
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import masterBanks from '@/routes/master-banks';
+import datamasterPembayarans from '@/routes/datamaster-pembayarans';
 
 export default function MasterPembayaran({ dataPembayaran }: { dataPembayaran: any }) {
    const [open, setOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function MasterPembayaran({ dataPembayaran }: { dataPembayaran: a
 
          {/* Table */}
 
-         <Card className="w-full border-2 bg-white">
+         <Card className="w-full border-2 bg-card">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                <CardTitle className="text-xl">Data Jenis Pembayaran</CardTitle>
                <DialogInput
@@ -83,7 +83,7 @@ MasterPembayaran.layout = {
    breadcrumbs: [
       {
          title: 'Master Data : Bank',
-         href: masterBanks.index(),
+         href: datamasterPembayarans.index(),
       },
    ],
 };

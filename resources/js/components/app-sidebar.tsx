@@ -1,6 +1,14 @@
 import { Link } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import {
+   BanknoteIcon,
+   FileText,
+   Landmark,
+   HandCoinsIcon,
+   LibraryBigIcon,
+   LayoutDashboardIcon,
+   UserPen,
+} from 'lucide-react';
 import { useEffect } from 'react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -15,8 +23,9 @@ import {
    SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import dashboard from '@/routes/dashboard';
-import banks from '@/routes/master-banks';
-import masterPembayarans from '@/routes/master-pembayarans';
+import datamasterAkun from '@/routes/datamaster-akun';
+import datamasterBanks from '@/routes/datamaster-banks';
+import datamasterPembayarans from '@/routes/datamaster-pembayarans';
 import reporttransaction from '@/routes/reporttransaction';
 import transaction from '@/routes/transaction';
 import type { NavItem } from '@/types';
@@ -25,31 +34,36 @@ const mainNavItems: NavItem[] = [
    {
       title: 'Dashboard',
       href: dashboard.index(),
-      icon: LayoutGrid,
+      icon: LayoutDashboardIcon,
    },
    {
       title: 'Transaksi',
       href: transaction.index(),
-      icon: LayoutGrid,
+      icon: BanknoteIcon,
    },
 ];
 const reportNavItems: NavItem[] = [
    {
       title: 'Laporan Transaksi',
       href: reporttransaction.index(),
-      icon: LayoutGrid,
+      icon: FileText,
    },
 ];
 const masterDataItems: NavItem[] = [
    {
-      title: 'Bank Data',
-      href: banks.index(),
-      icon: LayoutGrid,
+      title: 'Bank',
+      href: datamasterBanks.index(),
+      icon: Landmark,
    },
    {
-      title: 'Pembayaran Data',
-      href: masterPembayarans.index(),
-      icon: LayoutGrid,
+      title: 'Pembayaran',
+      href: datamasterPembayarans.index(),
+      icon: HandCoinsIcon,
+   },
+   {
+      title: 'Manajemen Akun',
+      href: datamasterAkun.index(),
+      icon: UserPen,
    },
 ];
 
@@ -57,7 +71,7 @@ const logActivity: NavItem[] = [
    {
       title: 'Log Activity',
       href: '/log-activity',
-      icon: LayoutGrid,
+      icon: LibraryBigIcon,
    },
 ];
 

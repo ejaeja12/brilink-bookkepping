@@ -126,7 +126,7 @@ export default function AdminFeeLineChart({ className = '' }: Props) {
    const adminFee = usePage<{ adminFeeSum: AdminFeeType }>().props.adminFeeSum;
 
    return (
-      <Card className={`col-span-4 w-full grow-0 bg-white py-4 ${className}`}>
+      <Card className={`col-span-4 w-full grow-0 bg-card py-4 ${className}`}>
          <CardHeader className="flex flex-col items-stretch border-b p-0! sm:flex-row">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0">
                <CardTitle>Line Chart - Interactive</CardTitle>

@@ -16,7 +16,7 @@ export default function CardTotalNumber({ className = '' }: Props) {
    const totalNumber = usePage<{ totalSumTransaction: TotalNumberProps }>().props.totalSumTransaction;
 
    return (
-      <Card className={`col-span-4 w-full bg-white ${className}`}>
+      <Card className={`col-span-4 w-full bg-card ${className}`}>
          <CardHeader>
             <CardTitle>Total Transaksi Hari Ini</CardTitle>
          </CardHeader>

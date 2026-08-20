@@ -6,14 +6,11 @@ import type { ChartConfig } from '@/components/ui/chart';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 export const description = 'A multiple bar chart';
 
-const chartData = [
-   { month: 'January', desktop: 186, mobile: 80, test: 100 },
-   { month: 'February', desktop: 305, mobile: 200, test: 100 },
-   { month: 'March', desktop: 237, mobile: 120, test: 100 },
-   { month: 'April', desktop: 73, mobile: 190, test: 100 },
-   { month: 'May', desktop: 209, mobile: 130, test: 100 },
-   { month: 'June', desktop: 214, mobile: 140, test: 100 },
-];
+const timeFormatter = new Intl.DateTimeFormat('id-ID', {
+   day: 'numeric',
+   month: 'short',
+   timeZone: 'Asia/Jakarta',
+});
 const chartConfig = {
    desktop: {
       label: 'Desktop',
@@ -38,10 +35,10 @@ export default function TransactionTypeBarChart({ className = '' }: Props) {
    const transactionTypeCount = usePage<{ transactionTypeCount: TransactionType[] }>().props.transactionTypeCount;
 
    return (
-      <Card className={`col-span-4 max-h-full w-full bg-white ${className}`}>
+      <Card className={`col-span-4 max-h-full w-full bg-card ${className}`}>
          <CardHeader>
-            <CardTitle>Bar Chart - Multiple</CardTitle>
-            <CardDescription>January - June 2024</CardDescription>
+            <CardTitle>Total Jenis Transaksi</CardTitle>
+            <CardDescription>7 Hari terakhir</CardDescription>
          </CardHeader>
          <CardContent>
             <ChartContainer config={chartConfig}>
@@ -52,21 +49,16 @@ export default function TransactionTypeBarChart({ className = '' }: Props) {
                      tickLine={false}
                      tickMargin={10}
                      axisLine={false}
-                     tickFormatter={(value) => value.slice(0, 6)}
+                     tickFormatter={(value) => timeFormatter.format(new Date(value))}
                   />
                   <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                  <Bar dataKey="tarik_tunai" fill="var(--color-desktop)" radius={4} />
-                  <Bar dataKey="setor_tunai" fill="var(--color-mobile)" radius={4} />
-                  <Bar dataKey="pembayaran" fill="var(--color-mobile)" radius={4} />
+                  <Bar dataKey="tarik_tunai" fill="var(--color-mobile)" radius={4} />
+                  <Bar dataKey="setor_tunai" fill="var(--color-desktop)" radius={4} />
+                  <Bar dataKey="pembayaran" fill="var(--color-chart-3)" radius={4} />
                </BarChart>
             </ChartContainer>
          </CardContent>
-         <CardFooter className="flex-col items-start gap-2 text-sm">
-            <div className="flex gap-2 leading-none font-medium">
-               Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
-         </CardFooter>
+         <CardFooter className="flex-col items-start gap-2 text-sm"></CardFooter>
       </Card>
    );
 }
