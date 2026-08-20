@@ -35,6 +35,7 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
    const [biayaLayanan, setBiayaLayanan] = useState(editData?.biaya_layanan ? String(editData?.biaya_layanan) : '');
    const [jenisPembayaran, setJenisPembayaran] = useState(editData?.jenis_pembayaran ?? '');
    const [bankValue, setBankValue] = useState(editData?.bank.id ?? '');
+   const [namaRek, setNamaRek] = useState(editData?.namaRek ?? '');
 
    const [fieldJenisPembayaran, setFieldJenisPembayaran] = useState(
       editData
@@ -60,6 +61,7 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
       jenis_transaksi: 'pembayaran',
       jenis_pembayaran: '',
       biaya_layanan: '0',
+      nama_rekening: '',
       biaya_admin: 0,
    });
 
@@ -80,6 +82,7 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
       setData('biaya_layanan', biayaLayanan);
       setData('jenis_pembayaran', jenisPembayaran);
       setData('bank_id', bankValue);
+      setData('nama_rekening', namaRek);
       validateData(() => {
          if (editId !== '') {
             put(update.url(editId), {
@@ -105,7 +108,9 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
             <div className="flex w-full flex-row">
                {/* Sumber Dana */}
                <Field>
-                  <FieldLabel htmlFor="username">Sumber Dana</FieldLabel>
+                  <FieldLabel htmlFor="username">
+                     Sumber Dana <span className="text-red-600">*</span>
+                  </FieldLabel>
 
                   <Select value={bankValue} onValueChange={(e) => setBankValue(e)} required>
                      <SelectTrigger className="w-full max-w-48">
@@ -125,7 +130,9 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
 
                {/* Pembayaran */}
                <Field>
-                  <FieldLabel htmlFor="username">Jenis Pembayaran</FieldLabel>
+                  <FieldLabel htmlFor="username">
+                     Jenis Pembayaran <span className="text-red-600">*</span>
+                  </FieldLabel>
                   <Select
                      value={fieldJenisPembayaran}
                      onValueChange={(e) => {
@@ -152,15 +159,24 @@ export function TabPembayaran({ editId = '', onSuccessCallBack }: Props) {
             <InputField
                hidden={fieldJenisPembayaran !== 'lainnya'}
                label="Jenis Pembayaran"
+               required
                value={jenisPembayaran}
                className="h-fit text-xl!"
                placeHolder="Jenis Pembayaran Lainnya"
                onChange={(e) => setJenisPembayaran(e.target.value)}
             />
 
-            <InputCurrency initialValue={nominal} label="Nominal" handleInput={setNominal} />
+            <InputField
+               label="Nama Pembayaran"
+               placeHolder="Nama tujuan"
+               onChange={(e) => setNamaRek(e.target.value)}
+            />
 
-            <InputCurrency initialValue={biayaLayanan} label="Biaya Layanan" handleInput={setBiayaLayanan} />
+            <div className="flex gap-3">
+               <InputCurrency required initialValue={nominal} label="Nominal" handleInput={setNominal} />
+
+               <InputCurrency initialValue={biayaLayanan} label="Biaya Layanan" handleInput={setBiayaLayanan} />
+            </div>
 
             <InputCurrency disabled displayValue={adminFeeRules(nominal)} label="Admin" />
 

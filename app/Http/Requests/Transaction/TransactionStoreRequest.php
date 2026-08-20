@@ -28,6 +28,7 @@ class TransactionStoreRequest extends FormRequest
             'bank_id' => 'required',
             'jenis_transaksi' => 'required',
             'nominal' => 'required|string|regex:/^[0-9]+$/',
+            'nama_rekening' => 'string|nullable',
             'biaya_layanan' => '',
             'jenis_pembayaran' => '',
             'biaya_admin' => 'required',

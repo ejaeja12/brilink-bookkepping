@@ -40,7 +40,7 @@ const rightNavItems: NavItem[] = [
 ];
 
 export function AppHeader({ breadcrumbs = [] }: Props) {
-   const page = usePage();
+   const page = usePage<{ auth: Auth }>();
    const { auth } = page.props;
    const { appearance, updateAppearance } = useAppearance();
    const getInitials = useInitials();

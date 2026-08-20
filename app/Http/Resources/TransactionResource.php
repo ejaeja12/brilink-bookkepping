@@ -21,9 +21,10 @@ class TransactionResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'transaksi' => $this->formatTransaction($this->jenis_transaksi, $bankName->name, $this->jenis_pembayaran),
+            'transaksi' => $this->formatTransaction($this->jenis_transaksi, $bankName->name, $this->jenis_pembayaran, $this->nama_rekening),
             'bank' => $bankName,
             'jenis_transaksi' => $this->jenis_transaksi,
+            'nama_rekening' => $this->nama_rekening,
             'jenis_pembayaran' => $this->jenis_pembayaran,
             'nominal' => $this->nominal,
             'biaya_layanan' => $this->biaya_layanan,
@@ -32,12 +33,13 @@ class TransactionResource extends JsonResource
         ];
     }
 
-    protected function formatTransaction(string $transaction, string $bank, string | null $paymentType): string
+    protected function formatTransaction(string $transaction, string $bank, string | null $paymentType, string | null $rekName): string
     {
+        $rekName = $rekName ?? ' - ';
         $result =  match ($transaction) {
-            'setor_tunai' => "Setor Tunai dari {$bank}",
-            'tarik_tunai' => "Tarik Tunai  ke {$bank}",
-            'pembayaran' => 'Pembayaran ' . "{$paymentType} via {$bank}",
+            'setor_tunai' => "Setor Tunai ke {$rekName}, Bank sumber : {$bank}",
+            'tarik_tunai' => "Tarik Tunai dari {$rekName}, Bank penampung : {$bank}",
+            'pembayaran' => "Pembayaran {$paymentType} atas nama {$rekName}, via : {$bank}",
             default => 'Belum diketahui'
         };
         return $result;

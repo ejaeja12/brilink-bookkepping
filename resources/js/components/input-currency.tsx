@@ -9,6 +9,7 @@ type InputFieldProps = {
    initialValue?: string | number;
    displayValue?: string | number | undefined;
    disabled?: boolean;
+   required?: boolean;
    placeHolder?: string;
    handleInput?: ((e: string) => void) | undefined;
 };
@@ -44,6 +45,7 @@ export default function InputCurrency({
    initialValue = '0',
    displayValue = undefined,
    className = '',
+   required = false,
    disabled = false,
    placeHolder = '',
    handleInput = undefined,
@@ -60,7 +62,11 @@ export default function InputCurrency({
    return (
       <>
          <Field hidden={hidden}>
-            <FieldLabel htmlFor="username">{label}</FieldLabel>
+            <FieldLabel htmlFor="username">
+               {label}
+
+               {required && <span className="text-red-600">*</span>}
+            </FieldLabel>
             <Input
                id="username"
                disabled={disabled}

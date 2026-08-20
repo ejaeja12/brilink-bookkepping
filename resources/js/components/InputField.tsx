@@ -7,9 +7,10 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from './ui/input-group';
 type InputFieldProps = {
    hidden?: boolean;
    label: string;
-   value: string;
+   value?: string | undefined;
    password?: boolean;
    className?: string;
+   required?: boolean;
    disabled?: boolean;
    placeHolder?: string;
    onChange?: ((e: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
@@ -18,8 +19,9 @@ export default function InputField({
    hidden = false,
    label,
    password = false,
-   value,
+   value = undefined,
    className = '',
+   required = false,
    disabled = false,
    placeHolder = '',
    onChange = undefined,
@@ -29,7 +31,9 @@ export default function InputField({
    return (
       <>
          <Field hidden={hidden}>
-            <FieldLabel htmlFor="username">{label}</FieldLabel>
+            <FieldLabel htmlFor="username">
+               {label} {required && <span className="text-red-600">*</span>}
+            </FieldLabel>
 
             {password ? (
                <InputGroup className={`h-fit bg-background! text-xl! ${className}`}>

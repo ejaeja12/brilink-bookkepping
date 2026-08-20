@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/transaction', [TransactionController::class, 'show'])->name('transaction.index');
     Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
     Route::put('/transaction/{id}', [TransactionController::class, 'update', 'id'])->name('transaction.update');
+    Route::delete('/transaction/{id}', [TransactionController::class, 'destroy', 'id'])->name('transaction.destroy');
 
 
 

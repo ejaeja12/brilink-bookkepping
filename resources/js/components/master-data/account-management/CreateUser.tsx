@@ -120,9 +120,9 @@ export default function CreateUser({ editId = 0, onSuccessCallBack = () => {} }:
                      />
                   </>
                )}
-               <div className="flex w-full flex-row justify-between">
+               <div className="flex w-full flex-row justify-between gap-12">
                   {/* role */}
-                  <Field className="w-fit">
+                  <Field className="w-full">
                      <FieldTitle>Role</FieldTitle>
                      <Select
                         disabled={editId === 1}
@@ -130,7 +130,7 @@ export default function CreateUser({ editId = 0, onSuccessCallBack = () => {} }:
                         onValueChange={(e) => setData('role', e)}
                         required
                      >
-                        <SelectTrigger className="w-fit max-w-32">
+                        <SelectTrigger className="w-full">
                            <SelectValue placeholder="Pilih Role" />
                         </SelectTrigger>
                         <SelectContent>
@@ -143,7 +143,7 @@ export default function CreateUser({ editId = 0, onSuccessCallBack = () => {} }:
                   </Field>
 
                   {/* Status */}
-                  <Field className="w-fit">
+                  <Field className="w-full">
                      <FieldTitle>Status</FieldTitle>
                      <Select
                         disabled={editId === 1}
@@ -151,7 +151,7 @@ export default function CreateUser({ editId = 0, onSuccessCallBack = () => {} }:
                         onValueChange={(e) => setData('status', e)}
                         required
                      >
-                        <SelectTrigger className="w-fit max-w-32">
+                        <SelectTrigger className="w-full">
                            <SelectValue placeholder="Pilih Status" />
                         </SelectTrigger>
                         <SelectContent>

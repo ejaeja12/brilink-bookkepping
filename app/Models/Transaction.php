@@ -28,6 +28,7 @@ class Transaction extends Model
         'jenis_transaksi',
         'jenis_pembayaran',
         'nominal',
+        'nama_rekening',
         'biaya_layanan',
         'biaya_admin',
     ];

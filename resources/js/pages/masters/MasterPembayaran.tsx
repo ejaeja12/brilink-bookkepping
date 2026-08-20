@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-
 import { DataTable } from '@/components/data_table/data-table';
 import InputSearch from '@/components/data_table/input-search';
 import DialogInput from '@/components/DialogInput';
 import CreatePembayaranData from '@/components/master-data/pembayaran_master/CreatePembayaran';
+import DeleteAction from '@/components/master-data/pembayaran_master/delete-action';
 import { pembayaranColumn } from '@/components/master-data/pembayaran_master/PembayaranColumn.';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,15 +14,22 @@ import datamasterPembayarans from '@/routes/datamaster-pembayarans';
 
 export default function MasterPembayaran({ dataPembayaran }: { dataPembayaran: any }) {
    const [open, setOpen] = useState(false);
+   const [openDelete, setOpenDelete] = useState(false);
    const [editId, setEditId] = useState('');
 
    function handleEditDialog(id: string) {
       setOpen(true);
       setEditId(id);
    }
+   function handleDelete(x: any) {
+      setOpenDelete(true);
+      setEditId(x);
+      console.log(x);
+   }
 
    function handleCloseDialog() {
       setOpen(false);
+      setOpenDelete(false);
       setEditId('');
    }
 
@@ -57,6 +64,9 @@ export default function MasterPembayaran({ dataPembayaran }: { dataPembayaran: a
                      actionEdit: (e) => {
                         handleEditDialog(e);
                      },
+                     onDelete: (e) => {
+                        handleDelete(e);
+                     },
                   })}
                   data={dataPembayaran}
                   filter={
@@ -75,6 +85,10 @@ export default function MasterPembayaran({ dataPembayaran }: { dataPembayaran: a
                </div>
             </CardContent>
          </Card>
+         {/* Delete Dialog */}
+         <DialogInput openState={openDelete} setCloseState={handleCloseDialog}>
+            <DeleteAction id={editId} handleCb={handleCloseDialog} />
+         </DialogInput>
       </>
    );
 }

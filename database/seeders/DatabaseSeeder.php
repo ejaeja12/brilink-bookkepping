@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
 
         Permission::create(['name' => 'add.transaksi']);
         Permission::create(['name' => 'edit.transaksi']);
+        Permission::create(['name' => 'delete.transaksi']);
         Permission::create(['name' => 'add.master-data']);
         Permission::create(['name' => 'edit.master-data']);
 

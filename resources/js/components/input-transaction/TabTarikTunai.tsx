@@ -9,6 +9,7 @@ import { update } from '@/routes/transaction';
 import type { Transaction } from '@/types/transaction';
 import type { BankType } from '@/types/transaction';
 import InputCurrency from '../input-currency';
+import InputField from '../InputField';
 import { toastSuccess, toastError } from '../toastNotif';
 import { Button } from '../ui/button';
 
@@ -31,11 +32,13 @@ export function TabTarikTunai({ editId = '', onSuccessCallBack }: Props) {
 
    const [nominal, setNominal] = useState(editData?.nominal ? String(editData?.nominal) : '');
    const [bankValue, setBankValue] = useState(editData?.bank.id ?? '');
+   const [namaRek, setNamaRek] = useState(editData?.namaRek ?? '');
 
    const { setData, post, put } = useForm({
       bank_id: '',
       nominal: '0',
       jenis_transaksi: 'tarik_tunai',
+      nama_rekening: '',
       biaya_admin: 0,
    });
 
@@ -53,6 +56,7 @@ export function TabTarikTunai({ editId = '', onSuccessCallBack }: Props) {
       e.preventDefault();
       setData('nominal', nominal);
       setData('bank_id', bankValue);
+      setData('nama_rekening', namaRek);
 
       validateData(() => {
          if (editId !== '') {
@@ -76,25 +80,34 @@ export function TabTarikTunai({ editId = '', onSuccessCallBack }: Props) {
    return (
       <FieldSet className="flex w-full py-8">
          <FieldGroup className="w-full">
-            <Field>
-               <FieldLabel htmlFor="username">Tujuan Dana</FieldLabel>
-               <Select value={bankValue} onValueChange={(e) => setBankValue(e)} required>
-                  <SelectTrigger className="w-full max-w-48">
-                     <SelectValue placeholder="Sumber Dana" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     <SelectGroup>
-                        {bankData.map((item) => (
-                           <SelectItem key={item.id} value={item.id.toString()}>
-                              {item.name}
-                           </SelectItem>
-                        ))}
-                     </SelectGroup>
-                  </SelectContent>
-               </Select>
-            </Field>
-
-            <InputCurrency initialValue={nominal} label="Nominal" handleInput={setNominal} />
+            {/*  */}
+            <div className="flex justify-between">
+               <Field>
+                  <FieldLabel htmlFor="username">
+                     Tujuan Dana <span className="text-red-600">*</span>
+                  </FieldLabel>
+                  <Select value={bankValue} onValueChange={(e) => setBankValue(e)} required>
+                     <SelectTrigger className="w-full max-w-48">
+                        <SelectValue placeholder="Sumber Dana" />
+                     </SelectTrigger>
+                     <SelectContent>
+                        <SelectGroup>
+                           {bankData.map((item) => (
+                              <SelectItem key={item.id} value={item.id.toString()}>
+                                 {item.name}
+                              </SelectItem>
+                           ))}
+                        </SelectGroup>
+                     </SelectContent>
+                  </Select>
+               </Field>
+               <InputField
+                  label="Nama Pengirim"
+                  placeHolder="Nama tujuan"
+                  onChange={(e) => setNamaRek(e.target.value)}
+               />
+            </div>
+            <InputCurrency required initialValue={nominal} label="Nominal" handleInput={setNominal} />
 
             <InputCurrency disabled displayValue={adminFeeRules(nominal)} label="Admin" />
 

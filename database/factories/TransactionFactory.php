@@ -22,6 +22,7 @@ class TransactionFactory extends Factory
             'id' => Uuid::uuid4()->toString(),
             'bank_id' => 'BNI',
             'jenis_transaksi' => 'pembayaran',
+            'nama_rekening' => fake()->name(),
             'nominal' => 10000,
             'biaya_layanan' => 1000,
             'biaya_admin' => 0,

@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, TrashIcon } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +17,13 @@ export type PembayaranData = {
    name: string;
 };
 
-export const pembayaranColumn = ({ actionEdit }: { actionEdit: (e: string) => void }): ColumnDef<PembayaranData>[] => [
+export const pembayaranColumn = ({
+   actionEdit,
+   onDelete,
+}: {
+   actionEdit: (e: string) => void;
+   onDelete: (x: any) => void;
+}): ColumnDef<PembayaranData>[] => [
    {
       accessorKey: 'id',
       // header: () => <div className="hidden w-0">ID</div>,
@@ -25,17 +31,35 @@ export const pembayaranColumn = ({ actionEdit }: { actionEdit: (e: string) => vo
    },
    {
       accessorKey: 'name',
-      header: 'Name',
+      header: () => {
+         return (
+            <div className="flex w-full justify-center">
+               <span className="w-1/4 font-semibold">Nama</span>
+            </div>
+         );
+      },
+      cell: ({ row }) => {
+         return (
+            <div className="flex w-full justify-center">
+               <span className="w-1/4">{row.getValue('name')}</span>
+            </div>
+         );
+      },
    },
 
    {
       id: 'actions',
-      header: () => <div className="">Actions</div>,
+      header: () => <div className="text-center">Actions</div>,
       cell: ({ row }) => {
          return (
-            <Button size="icon" variant="ghost" className="py-1" onClick={() => actionEdit(row.getValue('id'))}>
-               <Pencil />
-            </Button>
+            <div className="flex justify-center">
+               <Button size="icon" variant="ghost" className="py-1" onClick={() => actionEdit(row.getValue('id'))}>
+                  <Pencil />
+               </Button>
+               <Button size="icon" variant="ghost" className="py-1" onClick={() => onDelete(row.getValue('id'))}>
+                  <TrashIcon className="text-red-400" />
+               </Button>
+            </div>
          );
       },
    },

@@ -31,7 +31,7 @@ const setCookie = (name: string, value: string, days = 365): void => {
 
 const getStoredAppearance = (): Appearance => {
    if (typeof window === 'undefined') {
-      return 'light';
+      return 'dark';
    }
 
    return (localStorage.getItem('appearance') as Appearance) || 'system';

@@ -2,7 +2,6 @@ import { useForm } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { Field, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field';
-
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { adminFeeRules } from '@/lib/adminFeeRules';
 import { store } from '@/routes/transaction';
@@ -10,6 +9,7 @@ import { update } from '@/routes/transaction';
 import type { Transaction } from '@/types/transaction';
 import type { BankType } from '@/types/transaction';
 import InputCurrency from '../input-currency';
+import InputField from '../InputField';
 import { toastSuccess, toastError } from '../toastNotif';
 import { Button } from '../ui/button';
 
@@ -33,6 +33,7 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
 
    const [nominal, setNominal] = useState(editData?.nominal ? String(editData?.nominal) : '');
    const [biayaLayanan, setBiayaLayanan] = useState(editData?.biaya_layanan ? String(editData?.biaya_layanan) : '');
+   const [namaRek, setNamaRek] = useState(editData?.namaRek ?? '');
    const [bankValue, setBankValue] = useState(editData?.bank.id ?? '');
 
    const { setData, post, put } = useForm({
@@ -40,6 +41,7 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
       nominal: '0',
       jenis_transaksi: 'setor_tunai',
       biaya_layanan: '0',
+      nama_rekening: '',
       biaya_admin: 0,
    });
 
@@ -58,6 +60,7 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
       setData('nominal', nominal);
       setData('biaya_layanan', biayaLayanan);
       setData('bank_id', bankValue);
+      setData('nama_rekening', namaRek);
       validateData(() => {
          if (editId !== '') {
             put(update.url(editId), {
@@ -81,25 +84,34 @@ export function TabSetorTunai({ editId = '', onSuccessCallBack }: Props) {
       <form>
          <FieldSet className="flex w-full py-8">
             <FieldGroup className="w-full">
-               <Field>
-                  <FieldLabel htmlFor="username">Pilih Sumber Dana</FieldLabel>
-                  <Select value={bankValue} onValueChange={setBankValue} required>
-                     <SelectTrigger className="w-full max-w-48">
-                        <SelectValue placeholder="Sumber Dana" />
-                     </SelectTrigger>
-                     <SelectContent>
-                        <SelectGroup>
-                           {bankData.map((item) => (
-                              <SelectItem key={item.id} value={item.id.toString()}>
-                                 {item.name}
-                              </SelectItem>
-                           ))}
-                        </SelectGroup>
-                     </SelectContent>
-                  </Select>
-               </Field>
+               <div className="flex justify-between">
+                  <Field>
+                     <FieldLabel htmlFor="username">
+                        Pilih Sumber Dana <span className="text-red-600">*</span>
+                     </FieldLabel>
+                     <Select value={bankValue} onValueChange={setBankValue} required>
+                        <SelectTrigger className="w-full max-w-48">
+                           <SelectValue placeholder="Sumber Dana" />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectGroup>
+                              {bankData.map((item) => (
+                                 <SelectItem key={item.id} value={item.id.toString()}>
+                                    {item.name}
+                                 </SelectItem>
+                              ))}
+                           </SelectGroup>
+                        </SelectContent>
+                     </Select>
+                  </Field>
+                  <InputField
+                     label="Nama Tujuan"
+                     placeHolder="Nama tujuan"
+                     onChange={(e) => setNamaRek(e.target.value)}
+                  />
+               </div>
 
-               <InputCurrency initialValue={nominal} label="Nominal" handleInput={setNominal} />
+               <InputCurrency required initialValue={nominal} label="Nominal" handleInput={setNominal} />
 
                <InputCurrency initialValue={biayaLayanan} label="Biaya Layanan" handleInput={setBiayaLayanan} />
 

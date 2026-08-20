@@ -81,6 +81,6 @@ class MasterBankController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        MasterBank::find($id)->delete();
     }
 }

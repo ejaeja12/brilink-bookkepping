@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Services\DashboardService;
 use App\Services\TransactionService;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Inertia\Inertia;
@@ -67,6 +68,12 @@ class TransactionController extends Controller
                 'statistic' => $statistic
             ]
         );
+    }
+
+    #[Authorize('delete.transaksi')]
+    public function destroy(string $id)
+    {
+        Transaction::find($id)->delete();
     }
 
     public function search()

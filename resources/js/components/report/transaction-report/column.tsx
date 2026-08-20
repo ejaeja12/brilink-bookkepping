@@ -1,7 +1,6 @@
-import { usePage } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { MoreHorizontal, TrashIcon } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -47,21 +46,18 @@ function transactionBadge(tr: string) {
    }
 }
 
-export const columns = ({
-   onEdit,
-   onDelete = (x: any) => {},
-   isSuperAdmin = false,
-}: {
-   onEdit: (x: any) => void;
-   onDelete: (x: any) => void;
-   isSuperAdmin?: boolean;
-}): ColumnDef<Payment>[] => [
+export const columns = ({ onEdit }: { onEdit: (x: any) => void }): ColumnDef<Payment>[] => [
    {
       accessorKey: 'id',
    },
+
    {
-      accessorKey: 'transaksi',
-      header: 'Transaksi',
+      accessorKey: 'bank.name',
+      header: 'Bank',
+   },
+   {
+      accessorKey: 'nama_rekening',
+      header: 'Nama Nasabah',
    },
    {
       accessorKey: 'jenis_transaksi',
@@ -79,6 +75,18 @@ export const columns = ({
          );
       },
    },
+   {
+      accessorKey: 'jenis_pembayaran',
+      header: 'Jenis Pembayaran',
+      cell: ({ row }) => {
+         return (
+            <div className="flex w-full justify-center">
+               {row.getValue('jenis_pembayaran') == null ? '-' : row.getValue('jenis_pembayaran')}
+            </div>
+         );
+      },
+   },
+
    {
       accessorKey: 'nominal',
       header: () => <div className="">Nominal</div>,
@@ -122,24 +130,7 @@ export const columns = ({
          return <div className="w-full">{timeFormatter.format(new Date(row.getValue('created_at')))}</div>;
       },
    },
-   {
-      id: 'actions',
-      header: () => <div className="text-center">Actions</div>,
-      cell: ({ row }) => {
-         return (
-            <div className="flex justify-center">
-               <Button size="icon" variant="ghost" className="py-1" onClick={() => onEdit(row.getValue('id'))}>
-                  <Pencil />
-               </Button>
-               {isSuperAdmin && (
-                  <Button size="icon" variant="ghost" className="py-1" onClick={() => onDelete(row.getValue('id'))}>
-                     <TrashIcon className="text-red-400" />
-                  </Button>
-               )}
-            </div>
-         );
-      },
-   },
+
    // {
    //     accessorKey: 'email',
    //     header: ({ column }) => {

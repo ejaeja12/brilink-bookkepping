@@ -8,6 +8,7 @@ import { columns } from '@/components/data_table/columns';
 import { DataTable } from '@/components/data_table/data-table';
 import InputSearch from '@/components/data_table/input-search';
 import DialogInput from '@/components/DialogInput';
+import DeleteAction from '@/components/input-transaction/delete-action';
 import FieldsEditTransaction from '@/components/input-transaction/FieldsEditTransaction';
 import TabsCreateTransaction from '@/components/input-transaction/TabsCreateTransaction';
 import { Button } from '@/components/ui/button';
@@ -20,12 +21,14 @@ import transaction from '@/routes/transaction';
 
 export default function Transaksi({ transaksi }: { transaksi: any }) {
    const [open, setOpen] = useState(false);
+   const [openDelete, setOpenDelete] = useState(false);
    const [editId, setEditId] = useState('');
    const [search, setSearch] = useState('');
    const [dayFilter, setDayFilter] = useState('');
    const isMobile = useIsMobile();
 
-   const { statistic } = usePage<{ statistic: any }>().props;
+   const { statistic, auth } = usePage<{ statistic: any; auth: any }>().props;
+   const isRoleSuperAdmin = auth.role && auth?.role?.includes('super-admin');
 
    useEffect(() => {
       const x: Record<string, any> = {};
@@ -55,8 +58,15 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
       console.log(x);
    }
 
+   function handleDelete(x: any) {
+      setOpenDelete(true);
+      setEditId(x);
+      console.log(x);
+   }
+
    function handleCloseDialog() {
       setOpen(false);
+      setOpenDelete(false);
       setEditId('');
    }
 
@@ -68,6 +78,7 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
       <>
          <Head title="Dashboard" />
          <div className="flex flex-col gap-8">
+            {/* Mobile */}
             {isMobile ? (
                <>
                   <div>
@@ -123,6 +134,8 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
                   <DataTable
                      columns={columns({
                         onEdit: (columnData) => handleEditTogle(columnData),
+                        onDelete: (columnData) => handleDelete(columnData),
+                        isSuperAdmin: isRoleSuperAdmin,
                      })}
                      data={transaksi.data}
                      filter={
@@ -168,6 +181,11 @@ export default function Transaksi({ transaksi }: { transaksi: any }) {
                   </div>
                </CardContent>
             </Card>
+
+            {/* Delete transaction */}
+            <DialogInput openState={openDelete} setCloseState={handleCloseDialog}>
+               <DeleteAction id={editId} handleCb={handleCloseDialog} />
+            </DialogInput>
          </div>
       </>
    );

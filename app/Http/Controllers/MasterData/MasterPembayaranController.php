@@ -73,6 +73,6 @@ class MasterPembayaranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        MasterPembayaran::find($id)->delete();
     }
 }
