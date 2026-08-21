@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user()->select('name', 'email')->first(),
+                'user' => $request->user() ? $request->user()->select('name', 'email')->first() : null,
                 'role' => $request->user() ? $request->user()->getRoleNames() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
