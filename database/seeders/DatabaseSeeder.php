@@ -98,7 +98,8 @@ class DatabaseSeeder extends Seeder
                 $attributes = Transaction::factory()->state(
                     new Sequence([
                         'jenis_transaksi' => $jenisTransaksi[$randPembayaran],
-                        'nominal' => random_int(1, 10) * 100000
+                        'nominal' => random_int(1, 10) * 100000,
+                        'user_id' => 1
                     ],)
 
                 )->for($randBank)->make()->toArray();

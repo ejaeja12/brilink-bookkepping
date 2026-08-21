@@ -37,6 +37,7 @@ class TransactionController extends Controller
     {
 
         $transaction = $request->validated();
+        $transaction['user_id'] = auth()->user()->id;
         Transaction::create($transaction);
 
         return redirect()->route('transaction.index');

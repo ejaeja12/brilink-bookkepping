@@ -25,6 +25,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'bank_id',
+        'user_id',
         'jenis_transaksi',
         'jenis_pembayaran',
         'nominal',
@@ -74,5 +75,10 @@ class Transaction extends Model
         }
 
         return $attribute;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

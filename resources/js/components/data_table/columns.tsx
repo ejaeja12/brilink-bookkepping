@@ -4,16 +4,23 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, TrashIcon } from 'lucide-react';
 import { Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-
 import { Button } from '@/components/ui/button';
 import {
-   DropdownMenu,
-   DropdownMenuContent,
-   DropdownMenuItem,
-   DropdownMenuLabel,
-   DropdownMenuSeparator,
-   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+   Popover,
+   PopoverContent,
+   PopoverDescription,
+   PopoverHeader,
+   PopoverTitle,
+   PopoverTrigger,
+} from '@/components/ui/popover';
+// import {
+//    DropdownMenu,
+//    DropdownMenuContent,
+//    DropdownMenuItem,
+//    DropdownMenuLabel,
+//    DropdownMenuSeparator,
+//    DropdownMenuTrigger,
+// } from '@/components/ui/dropdown-menu';
 import { formatRupiah } from '@/hooks/useFormatCurrency';
 
 // This type is used to define the shape of our data.
@@ -32,6 +39,8 @@ export type Payment = {
    jenis_transaksi: string;
    nominal: number;
    biaya_layanan: number;
+   user: { id: number; name: string };
+   nama_rekening: string;
    biaya_admin: number;
    created_at: string;
 };
@@ -62,6 +71,22 @@ export const columns = ({
    {
       accessorKey: 'transaksi',
       header: 'Transaksi',
+      cell: ({ row }) => (
+         <>
+            <Popover>
+               <PopoverTrigger>
+                  <span className="hover:text-foreground! hover:underline">{row.getValue('transaksi')}</span>
+               </PopoverTrigger>
+               <PopoverContent align="start" className="bg-background">
+                  <PopoverHeader>
+                     <PopoverDescription className="text-foreground">
+                        Created By : {row.original.user.name}
+                     </PopoverDescription>
+                  </PopoverHeader>
+               </PopoverContent>
+            </Popover>
+         </>
+      ),
    },
    {
       accessorKey: 'jenis_transaksi',

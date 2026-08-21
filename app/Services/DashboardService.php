@@ -81,8 +81,9 @@ class DashboardService
     {
         // ambil jumlah dari  transakasi dalam 7 hari terakhir
 
+
         $data = $this->transaction
-            ->where('created_at', '>=', now()->subDays(7))
+            ->whereBetween('created_at', [now()->subDays(7)->startOfDay(), now()->subDays(1)->endOfDay()])
             ->selectRaw("
                 DATE(created_at) as date, COUNT(*) as count")
             ->groupBy('date')
@@ -96,7 +97,7 @@ class DashboardService
     {
 
         $data = $this->transaction
-            ->where('created_at', '>=', now()->subDays(7))
+            ->whereBetween('created_at', [now()->subDays(7)->startOfDay(), now()->subDays(1)->endOfDay()])
             ->selectRaw("
                 DATE(created_at) as date,
                 SUM(CASE WHEN jenis_transaksi = 'tarik_tunai' THEN 1 ELSE 0 END) as tarik_tunai,
@@ -115,7 +116,7 @@ class DashboardService
         // ambil jumlah dari masing-masing jenis transakasi dalam 7 hari terakhir
 
         $data = $this->transaction
-            ->where('created_at', '>=', now()->subDays(90))
+            ->whereBetween('created_at', [now()->subDays(90)->startOfDay(), now()->subDays(1)->endOfDay()])
             ->selectRaw('DATE(created_at) as date, SUM(biaya_admin) as admin_fee')
             ->groupBy('date')
             ->orderBy('date')

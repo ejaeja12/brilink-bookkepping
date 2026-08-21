@@ -23,6 +23,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('bank_id')->constrained('master_banks', 'id')->restrictOnDelete();
+            $table->foreignId('user_id')->constrained('users', 'id')->restrictOnDelete();
             $table->string('nama_rekening')->nullable();
             $table->string('jenis_transaksi');
             $table->string('jenis_pembayaran')->nullable();

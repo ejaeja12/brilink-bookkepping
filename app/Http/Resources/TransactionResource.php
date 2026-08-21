@@ -24,6 +24,7 @@ class TransactionResource extends JsonResource
             'transaksi' => $this->formatTransaction($this->jenis_transaksi, $bankName->name, $this->jenis_pembayaran, $this->nama_rekening),
             'bank' => $bankName,
             'jenis_transaksi' => $this->jenis_transaksi,
+            'user' => $this->user()->select('id', 'name')->first(),
             'nama_rekening' => $this->nama_rekening,
             'jenis_pembayaran' => $this->jenis_pembayaran,
             'nominal' => $this->nominal,
