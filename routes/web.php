@@ -17,9 +17,9 @@ Route::inertia('/', 'welcome')->name('home');
 // cron job buat vercel
 Route::get('/api/cron', function (Request $request) {
 
-    // if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
-    //     abort(401);
-    // }
+    if ($request->header('Authorization') !== 'Bearer ' . env('CRON_SECRET')) {
+        abort(401);
+    }
 
     set_time_limit(300);
 
