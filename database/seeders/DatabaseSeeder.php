@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
                     new Sequence([
                         'jenis_transaksi' => $jenisTransaksi[$randPembayaran],
                         'nominal' => random_int(1, 10) * 100000,
-                        'user_id' => 1
+                        'user_id' => $ownernAccount->id
                     ],)
 
                 )->for($randBank)->make()->toArray();
