@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $ownerRole = Role::create(['name' => 'super-admin']);
         $adminRole = Role::create(['name' => 'admin']);
 
-        $ownernAccount = User::create([
+        User::create([
             'name' => 'Owner',
             'email' => 'owner@test.com',
             'password' => Hash::make('Test123456'),
@@ -57,6 +57,8 @@ class DatabaseSeeder extends Seeder
 
         // $ownernAccount->givePermissionTo(Permission::all());
         $adminRole->givePermissionTo('add.transaksi');
+
+        $ownernAccount = User::find(1);
 
         $ownernAccount->assignRole($ownerRole);
         $adminAccount->assignRole($adminRole);
