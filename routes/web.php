@@ -25,7 +25,7 @@ Route::get('/api/cron', function (Request $request) {
 
     try {
 
-        Artisan::call('migrate:refresh', ['--seed' => true, '--force' => true]);
+        Artisan::call('migrate:refresh', ['--seed' => true]);
 
         return response()->json([
             'status' => 'success',
